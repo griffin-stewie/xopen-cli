@@ -1,0 +1,11 @@
+.DS_Store
+/.build
+/Packages
+/*.xcodeproj
+xcuserdata/
+DerivedData/
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+/.swiftpm/xcode/xcshareddata/xcschemes/xopen.xcscheme
+/developer_log.json
+/release_binary
+/release_binary.zip
