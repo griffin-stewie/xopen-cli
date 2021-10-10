@@ -39,6 +39,7 @@ let package = Package(
             name: "XopenCoreTests",
             dependencies: [
                 "XopenCore",
+                .product(name: "Path", package: "Path.swift"),
             ]),
     ]
 )
