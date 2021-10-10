@@ -3,6 +3,8 @@ import Cocoa
 
 public enum Xopen {
 
+    public static let xcodeVersionFileName = ".xcode-version"
+
     public static func inspect(url: URL) {
         do {
             let type = try NSWorkspace.shared.type(ofFile: url.path)
@@ -56,7 +58,8 @@ public enum Xopen {
                     throw XopenError.notInstalled(version)
                 }
             }
-        } else if let specificVersion = readXcodeVersionFile(at: url.deletingLastPathComponent()) {
+        } else if let xcodeVersionURL = findXcodeVersionFile(openFileURL: url),
+                  let specificVersion = readXcodeVersionFile(at: xcodeVersionURL) {
             if let temp = xcodes.findMatchedXcodeVersion(type: .supplement, userSpecificVersion: specificVersion) {
                 print("Use a Xcode(\(specificVersion)) that user specified.", to: &standardError)
                 xcode = temp

@@ -35,5 +35,11 @@ let package = Package(
         .testTarget(
             name: "xopenTests",
             dependencies: ["xopen"]),
+        .testTarget(
+            name: "XopenCoreTests",
+            dependencies: [
+                "XopenCore",
+                .product(name: "Path", package: "Path.swift"),
+            ]),
     ]
 )
