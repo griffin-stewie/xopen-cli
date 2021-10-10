@@ -12,4 +12,13 @@ public extension URL {
         var isDir: ObjCBool = false
         return FileManager.default.fileExists(atPath: path, isDirectory: &isDir) && isDir.boolValue
     }
+
+    var parent: URL? {
+        let deleted = self.deletingLastPathComponent()
+        if deleted == self {
+            return nil
+        }
+
+        return deleted
+    }
 }
