@@ -3,6 +3,8 @@ import Cocoa
 
 public enum Xopen {
 
+    public static let xcodeVersionFileName = ".xcode-version"
+
     public static func inspect(url: URL) {
         do {
             let type = try NSWorkspace.shared.type(ofFile: url.path)

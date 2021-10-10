@@ -22,7 +22,7 @@ extension Xopen {
 
 
     static func readXcodeVersionFile(at url: URL) -> String? {
-        let fileURL = url.appendingPathComponent(".xcode-version")
+        let fileURL = url.appendingPathComponent(xcodeVersionFileName)
         guard FileManager.default.fileExists(atPath: fileURL.path) else {
             return nil
         }
