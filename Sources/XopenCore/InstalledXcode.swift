@@ -95,7 +95,7 @@ extension Array where Element == InstalledXcode {
 
     func findMatchedXcodeVersion(type: MatchingType, userSpecificVersion: String) -> Element? {
         return first(where:{
-            isMatchXcodeVersion(type: .supplement, xcodeVersion: $0.shortVersion, userSpecificVersion: userSpecificVersion)
+            isMatchXcodeVersion(type: type, xcodeVersion: $0.shortVersion, userSpecificVersion: userSpecificVersion)
         })
     }
 }
