@@ -6,7 +6,7 @@ struct RootCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "xopen",
         abstract: "Open file using Xcode version you defined by .xcode-version",
-        version: "1.4.0",
+        version: "1.5.0",
         subcommands: [
             DefaultOpenCommand.self,
             OpenCommand.self,
