@@ -9,9 +9,9 @@ struct RootCommand: ParsableCommand {
         version: "1.4.0",
         subcommands: [
             OpenCommand.self,
-            HistoryCommand.self
+            HistoryCommand.self,
         ],
-        defaultSubcommand: OpenCommand.self
+        defaultSubcommand: DefaultOpenCommand.self
     )
 
     @OptionGroup()
