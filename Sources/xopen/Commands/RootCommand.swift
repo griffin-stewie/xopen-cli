@@ -8,6 +8,7 @@ struct RootCommand: ParsableCommand {
         abstract: "Open file using Xcode version you defined by .xcode-version",
         version: "1.4.0",
         subcommands: [
+            DefaultOpenCommand.self,
             OpenCommand.self,
             HistoryCommand.self,
         ],
