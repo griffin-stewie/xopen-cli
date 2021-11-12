@@ -6,6 +6,9 @@ import XopenCore
 struct OpenCommandOptions: ParsableArguments {
     @Option(name: .customLong("use"), help: ArgumentHelp("Specific Xcode version you want to use. 'beta' means the latest beta version. 'latest' means the latest release version.", valueName: UserSpecificXcodeVersion.valueNames))
     var specificVersion: UserSpecificXcodeVersion?
+
+    @Option(name: .customLong("use-fallback"), help: ArgumentHelp("Specific Xcode version you want to use when failed to find a specific Xcode.", valueName: UserSpecificXcodeVersion.valueNames))
+    var fallbackVersion: UserSpecificXcodeVersion?
     
     @Flag(help: ArgumentHelp("dry run", shouldDisplay: false))
     var dryRun: Bool = false
