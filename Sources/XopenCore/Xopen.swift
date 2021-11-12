@@ -22,7 +22,7 @@ public enum Xopen {
     }
 
     @discardableResult
-    public static func openXcode(with url: URL, targetVersion: UserSpecificXcodeVersion? = nil) throws -> NSRunningApplication {
+    public static func openXcode(with url: URL, targetVersion: UserSpecificXcodeVersion? = nil, fallbackVersion: UserSpecificXcodeVersion? = nil) throws -> NSRunningApplication {
         let urls = applicationURLsForURL(url)
         let xcodes = urls
             .compactMap({ InstalledXcode($0) })
@@ -36,28 +36,7 @@ public enum Xopen {
 
         let xcode: InstalledXcode
         if let targetVersion = targetVersion {
-
-            switch targetVersion {
-            case .beta:
-                if let latestXcode = xcodes.findLatestBeta() {
-                    xcode = latestXcode
-                } else {
-                    throw XopenError.notInstalled(targetVersion.string)
-                }
-            case .latest:
-                if let latestXcode = xcodes.findLatestRelease() {
-                    xcode = latestXcode
-                } else {
-                    throw XopenError.notInstalled(targetVersion.string)
-                }
-            case .specific(let version):
-                if let temp = xcodes.findMatchedXcodeVersion(type: .supplement, userSpecificVersion: targetVersion.string) {
-                    print("Use a Xcode(\(targetVersion.string)) that user specified.", to: &standardError)
-                    xcode = temp
-                } else {
-                    throw XopenError.notInstalled(version)
-                }
-            }
+            xcode = try xcodes.find(targetVersion: targetVersion)
         } else if let xcodeVersionURL = findXcodeVersionFile(openFileURL: url),
                   let specificVersion = readXcodeVersionFile(at: xcodeVersionURL) {
             if let temp = xcodes.findMatchedXcodeVersion(type: .supplement, userSpecificVersion: specificVersion) {
@@ -66,6 +45,8 @@ public enum Xopen {
             } else {
                 throw XopenError.notInstalled(specificVersion)
             }
+        } else if let fallbackVersion = fallbackVersion {
+            xcode = try xcodes.find(targetVersion: fallbackVersion)
         } else {
             xcode = xcodes.first!
             print("Use the latest Xcode(\(xcode.shortVersion)).", to: &standardError)
