@@ -1,5 +1,11 @@
 BINARY_NAME=xopen
+
+ifeq ($(shell uname -m),arm64)
+BINARIES_FOLDER=/opt/homebrew/bin
+else
 BINARIES_FOLDER=/usr/local/bin
+endif
+
 EXECUTABLE=$(shell swift build --configuration release --show-bin-path --arch arm64 --arch x86_64)/$(BINARY_NAME)
 
 .PHONY: check-env build install clean release_zip
