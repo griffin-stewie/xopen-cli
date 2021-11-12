@@ -85,6 +85,33 @@ extension InstalledXcode: Equatable, Comparable {
 }
 
 extension Array where Element == InstalledXcode {
+    func find(targetVersion: UserSpecificXcodeVersion) throws -> Element {
+        let element: Element
+        switch targetVersion {
+        case .beta:
+            if let latestXcode = findLatestBeta() {
+                element = latestXcode
+            } else {
+                throw XopenError.notInstalled(targetVersion.string)
+            }
+        case .latest:
+            if let latestXcode = findLatestRelease() {
+                element = latestXcode
+            } else {
+                throw XopenError.notInstalled(targetVersion.string)
+            }
+        case .specific(let version):
+            if let temp = findMatchedXcodeVersion(type: .supplement, userSpecificVersion: targetVersion.string) {
+                print("Use a Xcode(\(targetVersion.string)) that user specified.", to: &standardError)
+                element = temp
+            } else {
+                throw XopenError.notInstalled(version)
+            }
+        }
+
+        return element
+    }
+
     func findLatestBeta() -> Element? {
         return first(where:{ $0.isBeta })
     }

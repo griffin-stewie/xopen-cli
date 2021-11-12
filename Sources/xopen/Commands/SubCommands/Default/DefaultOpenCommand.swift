@@ -10,6 +10,12 @@ struct DefaultOpenCommand: ParsableCommand {
         shouldDisplay: false
     )
 
+    @Option(name: .customLong("use"), help: ArgumentHelp("Specific Xcode version you want to use. 'beta' means the latest beta version. 'latest' means the latest release version.", valueName: UserSpecificXcodeVersion.valueNames))
+    var specificVersion: UserSpecificXcodeVersion?
+
+    @Option(name: .customLong("use-fallback"), help: ArgumentHelp("Specific Xcode version you want to use when failed to find a specific Xcode.", valueName: UserSpecificXcodeVersion.valueNames))
+    var fallbackVersion: UserSpecificXcodeVersion = .latest
+
     func run() throws {
         try open()
         throw ExitCode.success
@@ -23,7 +29,7 @@ extension DefaultOpenCommand {
         let url = try findURLToOpen(under: rootDirectoryToFind.url)
 
         do {
-            try Xopen.openXcode(with: url, targetVersion: nil)
+            try Xopen.openXcode(with: url, targetVersion: specificVersion, fallbackVersion: fallbackVersion)
             var repo = try HistoryRepository()
             try repo.add(url: url)
             try repo.save()

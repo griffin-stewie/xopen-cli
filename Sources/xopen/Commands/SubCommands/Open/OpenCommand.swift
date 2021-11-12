@@ -34,7 +34,7 @@ extension OpenCommand {
                 return
             }
             
-            try Xopen.openXcode(with: url, targetVersion: options.specificVersion)
+            try Xopen.openXcode(with: url, targetVersion: options.specificVersion, fallbackVersion: options.fallbackVersion)
             var repo = try HistoryRepository()
             try repo.add(url: url)
             try repo.save()
