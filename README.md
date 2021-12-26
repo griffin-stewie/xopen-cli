@@ -31,6 +31,14 @@ You can open your project using `--use` option as well. The arguments of `--use`
 
 ## How to install
 
-Download [release_binary.zip](https://github.com/griffin-stewie/xopen-cli/releases/latest) and unzip & put `xopen` command wherever you like.
+`xopen` contains x86_64 and arm64 architectures both supports.
 
-- [ ] Support homebrew
+### Homebrew
+
+```sh
+brew install griffin-stewie/formulae/xopen-cli
+```
+
+### Manual
+
+Download [release_binary.zip](https://github.com/griffin-stewie/xopen-cli/releases/latest) and unzip & put `xopen` command wherever you like.
