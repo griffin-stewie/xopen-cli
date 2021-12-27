@@ -1,5 +1,6 @@
 import Foundation
 import AppKit
+import UniformTypeIdentifiers
 
 extension Xopen {
     static func applicationURLsForURL(_ url: URL) -> [URL] {
@@ -25,6 +26,22 @@ extension Xopen {
         return url! as URL
     }
 
+    static func defaultApplicationURLFor(url: URL) throws -> URL {
+        if #available(macOS 12.0, *) {
+            let values = try url.resourceValues(forKeys: [.contentTypeKey])
+            let type = values.contentType!
+            Logger.log("File type: \(type)")
+            let defaultAppURL = NSWorkspace.shared.urlForApplication(toOpen: type)!
+            Logger.log("Default App: \(defaultAppURL)")
+            return defaultAppURL
+        } else {
+            let type = try NSWorkspace.shared.type(ofFile: url.path)
+            Logger.log("File type: \(type)")
+            let defaultAppURL = try defaultApplicationURLForContentType(type: type)
+            Logger.log("Default App: \(defaultAppURL)")
+            return defaultAppURL
+        }
+    }
 
     static func readXcodeVersionFile(at url: URL) -> String? {
         guard FileManager.default.fileExists(atPath: url.path) else {
