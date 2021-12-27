@@ -7,10 +7,7 @@ public enum Xopen {
 
     public static func inspect(url: URL) {
         do {
-            let type = try NSWorkspace.shared.type(ofFile: url.path)
-            Logger.log("File type: \(type)")
-            let defaultAppURL = try defaultApplicationURLForContentType(type: type)
-            Logger.log("Default App: \(defaultAppURL)")
+            _ = try defaultApplicationURLFor(url: url)
         } catch {
             preconditionFailure("\(error)")
         }
