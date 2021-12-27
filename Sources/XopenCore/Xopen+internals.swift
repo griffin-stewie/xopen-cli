@@ -1,12 +1,17 @@
 import Foundation
+import AppKit
 
 extension Xopen {
     static func applicationURLsForURL(_ url: URL) -> [URL] {
-        guard let cf = LSCopyApplicationURLsForURL(url as CFURL, [.viewer, .editor])?.takeRetainedValue(), let urls = cf as? [URL] else {
-            preconditionFailure("unexpected behavior")
-        }
+        if #available(macOS 12.0, *) {
+            return NSWorkspace.shared.urlsForApplications(toOpen: url)
+        } else {
+            guard let cf = LSCopyApplicationURLsForURL(url as CFURL, [.viewer, .editor])?.takeRetainedValue(), let urls = cf as? [URL] else {
+                preconditionFailure("unexpected behavior")
+            }
 
-        return urls
+            return urls
+        }
     }
 
     static func defaultApplicationURLForContentType(type: String) throws -> URL {
