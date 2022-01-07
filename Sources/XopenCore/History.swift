@@ -10,7 +10,7 @@ public struct Configuration {
     static let historyJSONFileName: String = "history.json"
 
     static var historyJSONFilePath: Path {
-        rootDirectoryPath/historyJSONFileName
+        rootDirectoryPath / historyJSONFileName
     }
 
     static func existsConfigRootDirectory() -> Bool {
@@ -26,7 +26,7 @@ public struct Configuration {
 
     /// history JSON file URL
     public static var historyJSONFileURL: URL {
-        (rootDirectoryPath/historyJSONFileName).url
+        (rootDirectoryPath / historyJSONFileName).url
     }
 }
 

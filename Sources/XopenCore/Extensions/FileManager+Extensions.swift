@@ -1,6 +1,6 @@
 import Foundation
 
-public extension FileManager {
+extension FileManager {
 
     /// Move to specified directory and execute closure
     /// Move back to original location after closure
@@ -8,7 +8,7 @@ public extension FileManager {
     ///   - path: Destination
     ///   - closure: Invoked in the path you gave
     /// - Throws: exception
-    func chdir(_ path: String, closure: () throws -> Void) rethrows {
+    public func chdir(_ path: String, closure: () throws -> Void) rethrows {
         let previous = self.currentDirectoryPath
         self.changeCurrentDirectoryPath(path)
         defer { self.changeCurrentDirectoryPath(previous) }
@@ -21,7 +21,7 @@ public extension FileManager {
     ///   - path: Destination
     ///   - closure: Invoked in the path you gave
     /// - Throws: exception
-    func chdir<T>(_ path: String, closure: () throws -> T) rethrows -> T {
+    public func chdir<T>(_ path: String, closure: () throws -> T) rethrows -> T {
         let previous = self.currentDirectoryPath
         self.changeCurrentDirectoryPath(path)
         defer { self.changeCurrentDirectoryPath(previous) }
@@ -33,7 +33,7 @@ public extension FileManager {
     ///
     /// - Parameter url: File URL you want to remove
     /// - Throws: exception from `removeItem(at:)`
-    func removeItemIfExists(at url: Foundation.URL) throws {
+    public func removeItemIfExists(at url: Foundation.URL) throws {
         if self.fileExists(atPath: url.path) {
             try self.removeItem(at: url)
         }
@@ -43,7 +43,7 @@ public extension FileManager {
     ///
     /// - Parameter url: File URL you want to throw away
     /// - Throws: exception from `trashItem(at: resultingItemURL:)`
-    func trashItemIfExists(at url: Foundation.URL) throws {
+    public func trashItemIfExists(at url: Foundation.URL) throws {
         if self.fileExists(atPath: url.path) {
             try self.trashItem(at: url, resultingItemURL: nil)
         }

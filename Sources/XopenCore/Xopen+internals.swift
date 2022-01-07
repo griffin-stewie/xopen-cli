@@ -1,5 +1,5 @@
-import Foundation
 import AppKit
+import Foundation
 import UniformTypeIdentifiers
 
 extension Xopen {
@@ -72,10 +72,10 @@ extension Xopen {
     static func findXcodeVersionFile(openFileURL: URL, maxDepth: UInt = 4) -> URL? {
         // First, Try the target exists at same directory.
         let dirURL = openFileURL.deletingLastPathComponent()
-//        let xcodeVersionFileURL = dirURL.appendingPathComponent(xcodeVersionFileName)
-//        if FileManager.default.fileExists(atPath: xcodeVersionFileURL.path) {
-//            return xcodeVersionFileURL
-//        }
+        //        let xcodeVersionFileURL = dirURL.appendingPathComponent(xcodeVersionFileName)
+        //        if FileManager.default.fileExists(atPath: xcodeVersionFileURL.path) {
+        //            return xcodeVersionFileURL
+        //        }
 
         // Second, Try the target exists upper level but the limit is repository root.
         let a = XcodeVersionFilePathfinder(maxDepth: maxDepth)
@@ -92,7 +92,7 @@ extension Xopen {
 }
 
 @discardableResult
-fileprivate func shell(_ args: String...) -> (Int32, String) {
+private func shell(_ args: String...) -> (Int32, String) {
     let task = Process()
     let pipe = Pipe()
 

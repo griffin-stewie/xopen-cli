@@ -25,9 +25,9 @@ final class XcodeVersionFilePathfinder {
     }
 }
 
-private extension XcodeVersionFilePathfinder {
+extension XcodeVersionFilePathfinder {
     // Breadth-First Search
-    func traverse(from targetDirectoryURL: URL, maxDepth: UInt) throws -> URL? {
+    fileprivate func traverse(from targetDirectoryURL: URL, maxDepth: UInt) throws -> URL? {
         let fs = FileManager.default
         let options: FileManager.DirectoryEnumerationOptions = [.skipsPackageDescendants]
         let contents = try fs.contentsOfDirectory(at: targetDirectoryURL, includingPropertiesForKeys: nil, options: options)
@@ -36,7 +36,7 @@ private extension XcodeVersionFilePathfinder {
 
         for content in contents {
             #if DEBUG
-            print(content.absoluteString)
+                print(content.absoluteString)
             #endif
 
             if content.isFile {
@@ -67,7 +67,7 @@ private extension XcodeVersionFilePathfinder {
         return try traverse(from: nextTargetDir, maxDepth: maxDepth - 1)
     }
 
-    func depth(at targetDirectoryURL: URL, rootDirectoryURL: URL) -> UInt {
+    fileprivate func depth(at targetDirectoryURL: URL, rootDirectoryURL: URL) -> UInt {
         let t = targetDirectoryURL.pathComponents.count
         let r = rootDirectoryURL.pathComponents.count
 

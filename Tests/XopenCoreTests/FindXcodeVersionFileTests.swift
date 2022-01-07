@@ -1,13 +1,15 @@
-import XCTest
-import class Foundation.Bundle
 import Path
+import XCTest
+
+import class Foundation.Bundle
+
 @testable import XopenCore
 
 final class FindXcodeVersionFileTests: XCTestCase {
     func testReadXcodeVersionFileAtSameDirectory() throws {
         try Path.mktemp { tmpdir in
-            try (tmpdir/"Package.swift").touch()
-            let versionFile = try (tmpdir/Xopen.xcodeVersionFileName).touch()
+            try (tmpdir / "Package.swift").touch()
+            let versionFile = try (tmpdir / Xopen.xcodeVersionFileName).touch()
 
             let version = "13.0.0"
 
@@ -22,8 +24,8 @@ final class FindXcodeVersionFileTests: XCTestCase {
 
     func testFindXcodeVersionFileAtSameDirectory() throws {
         try Path.mktemp { tmpdir in
-            let fileURL = try (tmpdir/"Package.swift").touch()
-            let versionFile = try (tmpdir/Xopen.xcodeVersionFileName).touch()
+            let fileURL = try (tmpdir / "Package.swift").touch()
+            let versionFile = try (tmpdir / Xopen.xcodeVersionFileName).touch()
 
             let version = "13.0.0"
 
@@ -38,8 +40,8 @@ final class FindXcodeVersionFileTests: XCTestCase {
 
     func testFindXcodeVersionFileAtRoot() throws {
         try Path.mktemp { tmpdir in
-            let fileURL = try (tmpdir.a.mkdir()/"Package.swift").touch()
-            let versionFile = try (tmpdir/Xopen.xcodeVersionFileName).touch()
+            let fileURL = try (tmpdir.a.mkdir() / "Package.swift").touch()
+            let versionFile = try (tmpdir / Xopen.xcodeVersionFileName).touch()
 
             let uuidString = UUID().uuidString
             let version = "13.0.0 \(uuidString)"

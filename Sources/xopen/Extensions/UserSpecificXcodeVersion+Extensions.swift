@@ -1,5 +1,5 @@
-import Foundation
 import ArgumentParser
+import Foundation
 import XopenCore
 
 extension UserSpecificXcodeVersion: ExpressibleByArgument {
@@ -22,7 +22,7 @@ extension UserSpecificXcodeVersion: ExpressibleByArgument {
         let values: [UserSpecificXcodeVersion] = [
             .beta,
             .latest,
-            .specific("12.5")
+            .specific("12.5"),
         ]
 
         return values.map(\.string)

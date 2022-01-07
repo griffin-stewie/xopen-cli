@@ -1,6 +1,6 @@
-import Foundation
-import Dispatch
 import ArgumentParser
+import Dispatch
+import Foundation
 
 DispatchQueue.main.async {
     RootCommand.main()

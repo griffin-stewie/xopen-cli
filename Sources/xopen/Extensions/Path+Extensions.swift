@@ -1,14 +1,14 @@
-import Foundation
 import ArgumentParser
+import Foundation
 import Path
 
 extension Path: ExpressibleByArgument {
     public init?(argument: String) {
-        self = Path(argument) ?? Path.cwd/argument
+        self = Path(argument) ?? Path.cwd / argument
     }
 
     public var defaultValueDescription: String {
-        if self == Path.cwd/"." {
+        if self == Path.cwd / "." {
             return "current directory"
         }
 

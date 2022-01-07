@@ -1,7 +1,7 @@
 import Foundation
 
-public extension String {
-    var ns: NSString {
+extension String {
+    public var ns: NSString {
         (self as NSString)
     }
 }

@@ -6,7 +6,7 @@ final class InstalledXcode {
 
     let fileURL: URL
 
-    private let infoDictionary: [String:Any]
+    private let infoDictionary: [String: Any]
 
     private let versionPlist: VersionPlist
 
@@ -48,9 +48,9 @@ final class InstalledXcode {
 
         do {
             let data = try Data.init(contentsOf: plistURL)
-            let obj = try PropertyListSerialization.propertyList(from: data, options: [], format:nil)
+            let obj = try PropertyListSerialization.propertyList(from: data, options: [], format: nil)
             Logger.log("\(obj)")
-            guard let info = obj as? [String:Any] else {
+            guard let info = obj as? [String: Any] else {
                 return nil
             }
             self.infoDictionary = info
@@ -65,12 +65,12 @@ final class InstalledXcode {
 extension InstalledXcode: CustomStringConvertible {
     var description: String {
         return """
-        {
-        \turl: \(fileURL),
-        \tshortVersion: \(shortVersion),
-        \tversion: \(version)
-        }
-        """
+            {
+            \turl: \(fileURL),
+            \tshortVersion: \(shortVersion),
+            \tversion: \(version)
+            }
+            """
     }
 }
 
@@ -113,15 +113,15 @@ extension Array where Element == InstalledXcode {
     }
 
     func findLatestBeta() -> Element? {
-        return first(where:{ $0.isBeta })
+        return first(where: { $0.isBeta })
     }
 
     func findLatestRelease() -> Element? {
-        return first(where:{ !$0.isBeta })
+        return first(where: { !$0.isBeta })
     }
 
     func findMatchedXcodeVersion(type: MatchingType, userSpecificVersion: String) -> Element? {
-        return first(where:{
+        return first(where: {
             isMatchXcodeVersion(type: type, xcodeVersion: $0.shortVersion, userSpecificVersion: userSpecificVersion)
         })
     }
