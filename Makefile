@@ -8,7 +8,13 @@ endif
 
 EXECUTABLE=$(shell swift build --configuration release --show-bin-path --arch arm64 --arch x86_64)/$(BINARY_NAME)
 
-.PHONY: check-env build install clean release_zip
+.PHONY: format lint check-env build install clean release_zip
+
+format:
+	swift-format format --parallel --in-place --recursive ./Sources --recursive ./Tests
+
+lint:
+	swift-format lint --parallel --recursive ./Sources --recursive ./Tests
 
 check-env:
 	if test "$(SIGNING_IDENTIFIER)" = "" ; then \

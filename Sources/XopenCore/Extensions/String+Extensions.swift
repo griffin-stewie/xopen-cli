@@ -1,7 +1,9 @@
 import Foundation
 
-public extension String {
-    var ns: NSString {
+extension String {
+
+    /// Shorthand to get NSString type.
+    public var ns: NSString {
         (self as NSString)
     }
 }

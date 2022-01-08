@@ -1,30 +1,49 @@
-import Foundation
 import DequeModule
+import Foundation
 
-public extension Pathfinder {
-    static let workspacePathExtension: String = "xcworkspace"
-    static let projectPathExtension: String = "xcodeproj"
-    static let packageSwiftFileName: String = "Package.swift"
+extension Pathfinder {
+
+    /// workspace file extension
+    public static let workspacePathExtension: String = "xcworkspace"
+
+    /// xcodeproj file extension
+    public static let projectPathExtension: String = "xcodeproj"
+
+    /// Package.swift file name
+    public static let packageSwiftFileName: String = "Package.swift"
 }
 
+/// Find the file which will be open by Xcode
 public final class Pathfinder {
 
-    public static let defaultXcodeFileExtensions  = [
+    /// Default support file types
+    public static let defaultXcodeFileExtensions = [
         workspacePathExtension,
         projectPathExtension,
     ]
 
+    /// To ignore dot directories, set true.
     public let ignoreDotDirectories: Bool
+
+    /// Search targets of files to be open
     public let xcodeFileExtensions: [String]
 
     private var deque: Deque<URL> = Deque()
     private var foundURLs: [URL] = []
 
+    /// Initializer
+    /// - Parameters:
+    ///   - ignoreDotDirectories: If it's ture, then ignores dot directories. Default value is `true`
+    ///   - xcodeFileExtensions: Support file types. Default value is `Pathfinder.defaultXcodeFileExtensions`
     public init(ignoreDotDirectories: Bool = true, xcodeFileExtensions: [String] = Pathfinder.defaultXcodeFileExtensions) {
         self.ignoreDotDirectories = ignoreDotDirectories
         self.xcodeFileExtensions = xcodeFileExtensions
     }
 
+    /// Discover file under given direcotry
+    /// - Parameter rootDirectoryURL: Search root directory file URL.
+    /// - Returns: URL found.
+    /// - Throws: when not found.
     public func discoverFileURL(under rootDirectoryURL: URL) throws -> URL {
         let url = try traverse(at: rootDirectoryURL, rootDirectoryURL: rootDirectoryURL)
 
@@ -36,24 +55,22 @@ public final class Pathfinder {
     }
 }
 
-private extension Pathfinder {
+extension Pathfinder {
     // Breadth-First Search
-    func traverse(at targetDirectoryURL: URL, rootDirectoryURL: URL) throws -> URL? {
+    fileprivate func traverse(at targetDirectoryURL: URL, rootDirectoryURL: URL) throws -> URL? {
         let fs = FileManager.default
         let options: FileManager.DirectoryEnumerationOptions = [.skipsHiddenFiles, .skipsPackageDescendants]
         let contents = try fs.contentsOfDirectory(at: targetDirectoryURL, includingPropertiesForKeys: nil, options: options)
 
         for content in contents {
             #if DEBUG
-            print(content.absoluteString)
+                print(content.absoluteString)
             #endif
 
             if content.isDirectory {
                 deque.append(content)
-                for ext in xcodeFileExtensions {
-                    if content.lastPathComponent.ns.pathExtension == ext {
-                        foundURLs.append(content)
-                    }
+                for ext in xcodeFileExtensions where ext == content.lastPathComponent.ns.pathExtension {
+                    foundURLs.append(content)
                 }
             }
 
@@ -65,8 +82,8 @@ private extension Pathfinder {
         }
 
         #if DEBUG
-        debugPrint(collection: deque, label: "Deque")
-        debugPrint(collection: foundURLs, label: "Found so far")
+            debugPrint(collection: deque, label: "Deque")
+            debugPrint(collection: foundURLs, label: "Found so far")
         #endif
 
         guard let nextTargetDir = deque.popFirst() else {
@@ -83,13 +100,13 @@ private extension Pathfinder {
         return try traverse(at: nextTargetDir, rootDirectoryURL: rootDirectoryURL)
     }
 
-    func willChangeDepth(currentTarget currentTargetDirectoryURL: URL, nextTarget nextTargetDirectoryURL: URL, rootDirectoryURL: URL) -> Bool {
+    fileprivate func willChangeDepth(currentTarget currentTargetDirectoryURL: URL, nextTarget nextTargetDirectoryURL: URL, rootDirectoryURL: URL) -> Bool {
         let currentDepth = depth(at: currentTargetDirectoryURL, rootDirectoryURL: rootDirectoryURL)
         let nextDepth = depth(at: nextTargetDirectoryURL, rootDirectoryURL: rootDirectoryURL)
         return currentDepth < nextDepth
     }
 
-    func depth(at targetDirectoryURL: URL, rootDirectoryURL: URL) -> UInt {
+    fileprivate func depth(at targetDirectoryURL: URL, rootDirectoryURL: URL) -> UInt {
         let t = targetDirectoryURL.pathComponents.count
         let r = rootDirectoryURL.pathComponents.count
 
@@ -98,7 +115,7 @@ private extension Pathfinder {
         return UInt(t - r)
     }
 
-    func foundURL() -> URL? {
+    fileprivate func foundURL() -> URL? {
         for ext in Self.defaultXcodeFileExtensions {
             let found = foundURLs.first { url in
                 url.lastPathComponent.ns.pathExtension == ext
@@ -114,7 +131,7 @@ private extension Pathfinder {
         }
     }
 
-    func debugPrint<T: Collection>(collection: T, label: String? = nil) {
+    fileprivate func debugPrint<T: Collection>(collection: T, label: String? = nil) {
         print("debugPrint label:\(label ?? "nil") {")
         for a in collection {
             print("\t\(a)")

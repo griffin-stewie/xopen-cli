@@ -1,5 +1,6 @@
 import Foundation
 
+/// Xopen's Error
 public enum XopenError: Error {
     case noXcodes
     case notInstalled(String)
@@ -7,6 +8,8 @@ public enum XopenError: Error {
 }
 
 extension XopenError: LocalizedError {
+
+    /// Error description
     public var errorDescription: String? {
         switch self {
         case .noXcodes:
@@ -18,10 +21,12 @@ extension XopenError: LocalizedError {
         }
     }
 
+    /// helpAnchor
     public var helpAnchor: String? {
         return nil
     }
 
+    /// recoverySuggestion
     public var recoverySuggestion: String? {
         return nil
     }

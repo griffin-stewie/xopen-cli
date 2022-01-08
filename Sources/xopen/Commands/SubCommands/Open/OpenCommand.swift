@@ -1,5 +1,5 @@
-import Foundation
 import ArgumentParser
+import Foundation
 import XopenCore
 
 struct OpenCommand: ParsableCommand {
@@ -25,7 +25,7 @@ extension OpenCommand {
         } else {
             url = options.path!.url
         }
-        
+
         Xopen.inspect(url: url)
 
         do {
@@ -33,7 +33,7 @@ extension OpenCommand {
                 print("\(url.absoluteString) will opened by \(String(describing: options.specificVersion))")
                 return
             }
-            
+
             try Xopen.openXcode(with: url, targetVersion: options.specificVersion, fallbackVersion: options.fallbackVersion)
             var repo = try HistoryRepository()
             try repo.add(url: url)
@@ -50,7 +50,7 @@ extension OpenCommand {
             }
         }
     }
-    
+
     private func findURLToOpen(under directoryURL: URL) throws -> URL {
         let pathfinder = Pathfinder()
         return try pathfinder.discoverFileURL(under: directoryURL)

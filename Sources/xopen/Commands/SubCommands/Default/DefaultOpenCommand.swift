@@ -1,5 +1,5 @@
-import Foundation
 import ArgumentParser
+import Foundation
 import Path
 import XopenCore
 
@@ -24,7 +24,7 @@ struct DefaultOpenCommand: ParsableCommand {
 
 extension DefaultOpenCommand {
     private func open() throws {
-        let rootDirectoryToFind = Path.cwd/"."
+        let rootDirectoryToFind = Path.cwd / "."
 
         let url = try findURLToOpen(under: rootDirectoryToFind.url)
 
@@ -45,7 +45,7 @@ extension DefaultOpenCommand {
             }
         }
     }
-    
+
     private func findURLToOpen(under directoryURL: URL) throws -> URL {
         let pathfinder = Pathfinder()
         return try pathfinder.discoverFileURL(under: directoryURL)

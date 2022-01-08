@@ -1,8 +1,10 @@
-import Foundation
 import ArgumentParser
+import Foundation
 import XopenCore
 
 extension UserSpecificXcodeVersion: ExpressibleByArgument {
+
+    /// Initializer to confirm `ExpressibleByArgument`
     public init?(argument: String) {
         switch argument.lowercased() {
         case "beta":
@@ -22,16 +24,18 @@ extension UserSpecificXcodeVersion: ExpressibleByArgument {
         let values: [UserSpecificXcodeVersion] = [
             .beta,
             .latest,
-            .specific("12.5")
+            .specific("12.5"),
         ]
 
         return values.map(\.string)
     }
 
+    /// defaultValueDescription
     public var defaultValueDescription: String {
         string
     }
 
+    /// To support completion
     public static var defaultCompletionKind: CompletionKind {
         return .list(completionList)
     }

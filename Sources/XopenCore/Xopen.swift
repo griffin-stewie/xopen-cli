@@ -1,10 +1,13 @@
-import Foundation
 import Cocoa
+import Foundation
 
 public enum Xopen {
 
+    /// .xocde-version file name
     public static let xcodeVersionFileName = ".xcode-version"
 
+    /// Prints support app locations for debug purpose
+    /// - Parameter url: A file URL to be inspect.
     public static func inspect(url: URL) {
         do {
             _ = try defaultApplicationURLFor(url: url)
@@ -18,10 +21,18 @@ public enum Xopen {
         }
     }
 
+    /// Open a file by Xcode
+    /// - Parameters:
+    ///   - url: A file URL you want to open by Xcode
+    ///   - targetVersion: Xcode version you want to use.
+    ///   - fallbackVersion: Xcode version you want to use if no xcode-version.
+    /// - Returns: NSRunningApplication
+    /// - Throws: error.
     @discardableResult
     public static func openXcode(with url: URL, targetVersion: UserSpecificXcodeVersion? = nil, fallbackVersion: UserSpecificXcodeVersion? = nil) throws -> NSRunningApplication {
         let urls = applicationURLsForURL(url)
-        let xcodes = urls
+        let xcodes =
+            urls
             .compactMap({ InstalledXcode($0) })
             .sorted(by: >)
 
@@ -34,8 +45,7 @@ public enum Xopen {
         let xcode: InstalledXcode
         if let targetVersion = targetVersion {
             xcode = try xcodes.find(targetVersion: targetVersion)
-        } else if let xcodeVersionURL = findXcodeVersionFile(openFileURL: url),
-                  let specificVersion = readXcodeVersionFile(at: xcodeVersionURL) {
+        } else if let xcodeVersionURL = findXcodeVersionFile(openFileURL: url), let specificVersion = readXcodeVersionFile(at: xcodeVersionURL) {
             if let temp = xcodes.findMatchedXcodeVersion(type: .supplement, userSpecificVersion: specificVersion) {
                 print("Use a Xcode(\(specificVersion)) that user specified.", to: &standardError)
                 xcode = temp

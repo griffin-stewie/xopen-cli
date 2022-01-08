@@ -6,10 +6,10 @@ public enum UserSpecificXcodeVersion {
     case specific(String)
 }
 
-public extension UserSpecificXcodeVersion {
+extension UserSpecificXcodeVersion {
 
-    /// Returns String representation. It returns Associated Values in case `.specifc(String)`. 
-    var string: String {
+    /// Returns String representation. It returns Associated Values in case `.specifc(String)`.
+    public var string: String {
         switch self {
         case .beta:
             return "beta"
@@ -22,6 +22,8 @@ public extension UserSpecificXcodeVersion {
 }
 
 extension UserSpecificXcodeVersion: CustomStringConvertible {
+
+    /// Description of UserSpecificXcodeVersion
     public var description: String {
         string
     }
