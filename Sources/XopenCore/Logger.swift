@@ -1,5 +1,6 @@
 import Foundation
 
+/// Logger
 public struct Logger {
 
     //    public static var debug: Logger {
@@ -12,8 +13,15 @@ public struct Logger {
     //
     //    public static var shard: Logger = Logger(verbose: false)
 
+    /// verbose option
     public static var verbose: Bool = false
 
+    /// log
+    /// - Parameters:
+    ///   - message: message
+    ///   - file: file name
+    ///   - function: function name
+    ///   - line: line number
     public static func log(_ message: Any, file: String = #file, function: String = #function, line: Int = #line) {
         guard verbose else {
             return
@@ -27,9 +35,14 @@ public struct Logger {
     }
 }
 
+/// Standard error output shared instance
 public var standardError = StandardError()
 
+/// Standard error output
 public struct StandardError: TextOutputStream {
+
+    /// Write given String into stderr
+    /// - Parameter string: The String which will be write into stderr.
     public mutating func write(_ string: String) {
         for byte in string.utf8 { putc(numericCast(byte), stderr) }
     }

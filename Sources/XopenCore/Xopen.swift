@@ -3,8 +3,11 @@ import Foundation
 
 public enum Xopen {
 
+    /// .xocde-version file name
     public static let xcodeVersionFileName = ".xcode-version"
 
+    /// Prints support app locations for debug purpose
+    /// - Parameter url: A file URL to be inspect.
     public static func inspect(url: URL) {
         do {
             _ = try defaultApplicationURLFor(url: url)
@@ -18,6 +21,13 @@ public enum Xopen {
         }
     }
 
+    /// Open a file by Xcode
+    /// - Parameters:
+    ///   - url: A file URL you want to open by Xcode
+    ///   - targetVersion: Xcode version you want to use.
+    ///   - fallbackVersion: Xcode version you want to use if no xcode-version.
+    /// - Returns: NSRunningApplication
+    /// - Throws: error.
     @discardableResult
     public static func openXcode(with url: URL, targetVersion: UserSpecificXcodeVersion? = nil, fallbackVersion: UserSpecificXcodeVersion? = nil) throws -> NSRunningApplication {
         let urls = applicationURLsForURL(url)

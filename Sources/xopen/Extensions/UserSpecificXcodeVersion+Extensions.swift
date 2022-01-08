@@ -3,6 +3,8 @@ import Foundation
 import XopenCore
 
 extension UserSpecificXcodeVersion: ExpressibleByArgument {
+
+    /// Initializer to confirm `ExpressibleByArgument`
     public init?(argument: String) {
         switch argument.lowercased() {
         case "beta":
@@ -28,10 +30,12 @@ extension UserSpecificXcodeVersion: ExpressibleByArgument {
         return values.map(\.string)
     }
 
+    /// defaultValueDescription
     public var defaultValueDescription: String {
         string
     }
 
+    /// To support completion
     public static var defaultCompletionKind: CompletionKind {
         return .list(completionList)
     }

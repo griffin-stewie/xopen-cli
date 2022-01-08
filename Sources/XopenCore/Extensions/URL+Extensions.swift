@@ -13,6 +13,7 @@ extension URL {
         return FileManager.default.fileExists(atPath: path, isDirectory: &isDir) && isDir.boolValue
     }
 
+    /// Returns parent directory if possible.
     public var parent: URL? {
         let deleted = self.deletingLastPathComponent()
         if deleted == self {

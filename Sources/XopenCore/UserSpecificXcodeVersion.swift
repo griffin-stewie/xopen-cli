@@ -22,6 +22,8 @@ extension UserSpecificXcodeVersion {
 }
 
 extension UserSpecificXcodeVersion: CustomStringConvertible {
+
+    /// Description of UserSpecificXcodeVersion
     public var description: String {
         string
     }

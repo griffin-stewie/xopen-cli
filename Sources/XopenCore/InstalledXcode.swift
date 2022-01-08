@@ -1,6 +1,6 @@
 import Foundation
 
-let XcodeBundleIdentifier = "com.apple.dt.Xcode"
+let xcodeBundleIdentifier = "com.apple.dt.Xcode"
 
 final class InstalledXcode {
 
@@ -33,7 +33,7 @@ final class InstalledXcode {
             return nil
         }
 
-        guard bundleIdentifier == XcodeBundleIdentifier else {
+        guard bundleIdentifier == xcodeBundleIdentifier else {
             return nil
         }
 

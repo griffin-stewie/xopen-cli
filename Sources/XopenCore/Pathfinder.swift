@@ -2,29 +2,48 @@ import DequeModule
 import Foundation
 
 extension Pathfinder {
+
+    /// workspace file extension
     public static let workspacePathExtension: String = "xcworkspace"
+
+    /// xcodeproj file extension
     public static let projectPathExtension: String = "xcodeproj"
+
+    /// Package.swift file name
     public static let packageSwiftFileName: String = "Package.swift"
 }
 
+/// Find the file which will be open by Xcode
 public final class Pathfinder {
 
+    /// Default support file types
     public static let defaultXcodeFileExtensions = [
         workspacePathExtension,
         projectPathExtension,
     ]
 
+    /// To ignore dot directories, set true.
     public let ignoreDotDirectories: Bool
+
+    /// Search targets of files to be open
     public let xcodeFileExtensions: [String]
 
     private var deque: Deque<URL> = Deque()
     private var foundURLs: [URL] = []
 
+    /// Initializer
+    /// - Parameters:
+    ///   - ignoreDotDirectories: If it's ture, then ignores dot directories. Default value is `true`
+    ///   - xcodeFileExtensions: Support file types. Default value is `Pathfinder.defaultXcodeFileExtensions`
     public init(ignoreDotDirectories: Bool = true, xcodeFileExtensions: [String] = Pathfinder.defaultXcodeFileExtensions) {
         self.ignoreDotDirectories = ignoreDotDirectories
         self.xcodeFileExtensions = xcodeFileExtensions
     }
 
+    /// Discover file under given direcotry
+    /// - Parameter rootDirectoryURL: Search root directory file URL.
+    /// - Returns: URL found.
+    /// - Throws: when not found.
     public func discoverFileURL(under rootDirectoryURL: URL) throws -> URL {
         let url = try traverse(at: rootDirectoryURL, rootDirectoryURL: rootDirectoryURL)
 
@@ -50,10 +69,8 @@ extension Pathfinder {
 
             if content.isDirectory {
                 deque.append(content)
-                for ext in xcodeFileExtensions {
-                    if content.lastPathComponent.ns.pathExtension == ext {
-                        foundURLs.append(content)
-                    }
+                for ext in xcodeFileExtensions where ext == content.lastPathComponent.ns.pathExtension {
+                    foundURLs.append(content)
                 }
             }
 
