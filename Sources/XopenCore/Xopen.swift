@@ -24,9 +24,9 @@ public enum Xopen {
     /// Open a file by Xcode
     /// - Parameters:
     ///   - url: A file URL you want to open by Xcode
-    ///   - targetVersion: Xcode version you want to use.
-    ///   - fallbackVersion: Xcode version you want to use if no xcode-version.
-    /// - Returns: NSRunningApplication
+    ///   - targetVersion: Xcode version you want to use
+    ///   - fallbackVersion: Xcode version you want to use if no xcode-version
+    /// - Returns: NSRunningApplication.
     /// - Throws: error.
     @discardableResult
     public static func openXcode(with url: URL, targetVersion: UserSpecificXcodeVersion? = nil, fallbackVersion: UserSpecificXcodeVersion? = nil) throws -> NSRunningApplication {
