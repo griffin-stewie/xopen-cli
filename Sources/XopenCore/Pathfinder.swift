@@ -33,7 +33,7 @@ public final class Pathfinder {
 
     /// Initializer
     /// - Parameters:
-    ///   - ignoreDotDirectories: If it's ture, then ignores dot directories. Default value is `true`
+    ///   - ignoreDotDirectories: If it's ture, then ignores dot directories, default value is `true`
     ///   - xcodeFileExtensions: Support file types. Default value is `Pathfinder.defaultXcodeFileExtensions`
     public init(ignoreDotDirectories: Bool = true, xcodeFileExtensions: [String] = Pathfinder.defaultXcodeFileExtensions) {
         self.ignoreDotDirectories = ignoreDotDirectories
@@ -41,7 +41,7 @@ public final class Pathfinder {
     }
 
     /// Discover file under given direcotry
-    /// - Parameter rootDirectoryURL: Search root directory file URL.
+    /// - Parameter rootDirectoryURL: Search root directory file URL
     /// - Returns: URL found.
     /// - Throws: when not found.
     public func discoverFileURL(under rootDirectoryURL: URL) throws -> URL {
