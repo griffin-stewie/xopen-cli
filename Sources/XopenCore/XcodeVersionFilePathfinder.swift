@@ -1,4 +1,5 @@
 import Foundation
+import Log
 
 extension XcodeVersionFilePathfinder {
     static let xcodeVersionFileName: String = Xopen.xcodeVersionFileName
@@ -36,7 +37,7 @@ extension XcodeVersionFilePathfinder {
 
         for content in contents {
             #if DEBUG
-                print(content.absoluteString)
+            logger.debug("\(content.absoluteString)")
             #endif
 
             if content.isFile {

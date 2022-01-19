@@ -2,6 +2,7 @@ import ArgumentParser
 import Foundation
 import Path
 import XopenCore
+import Stream
 
 struct DefaultOpenCommand: ParsableCommand {
     static var configuration = CommandConfiguration(

@@ -1,5 +1,7 @@
 import DequeModule
 import Foundation
+import Log
+import Logging
 
 extension Pathfinder {
 
@@ -64,7 +66,7 @@ extension Pathfinder {
 
         for content in contents {
             #if DEBUG
-                print(content.absoluteString)
+                logger.debug("\(content.absoluteString)")
             #endif
 
             if content.isDirectory {
@@ -82,8 +84,8 @@ extension Pathfinder {
         }
 
         #if DEBUG
-            debugPrint(collection: deque, label: "Deque")
-            debugPrint(collection: foundURLs, label: "Found so far")
+            logger.debug(debugPrint(collection: deque, label: "Deque"))
+            logger.debug(debugPrint(collection: foundURLs, label: "Found so far"))
         #endif
 
         guard let nextTargetDir = deque.popFirst() else {
@@ -131,11 +133,25 @@ extension Pathfinder {
         }
     }
 
-    fileprivate func debugPrint<T: Collection>(collection: T, label: String? = nil) {
-        print("debugPrint label:\(label ?? "nil") {")
+    fileprivate func debugPrint<T: Collection>(collection: T, label: String? = nil) -> String {
+        var str = ""
+        print("debugPrint label:\(label ?? "nil") {", to: &str)
         for a in collection {
-            print("\t\(a)")
+            print("\t\(a)", to: &str)
         }
-        print("}")
+        print("}", to: &str)
+
+        return str
+    }
+
+    fileprivate func debugPrint<T: Collection>(collection: T, label: String? = nil) -> Logger.Message {
+        var str = ""
+        print("debugPrint label:\(label ?? "nil") {", to: &str)
+        for a in collection {
+            print("\t\(a)", to: &str)
+        }
+        print("}", to: &str)
+
+        return Logger.Message.init(stringLiteral: str)
     }
 }

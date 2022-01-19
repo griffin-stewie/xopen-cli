@@ -1,6 +1,7 @@
 import ArgumentParser
 import Foundation
 import XopenCore
+import Log
 
 struct RootCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
@@ -19,6 +20,6 @@ struct RootCommand: ParsableCommand {
     var options: RootCommandOptions
 
     func validate() throws {
-        Logger.verbose = options.verbose
+        logger.logLevel = options.logLevel()
     }
 }
