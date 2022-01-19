@@ -4,7 +4,7 @@ import Path
 import Logging
 
 struct RootCommandOptions: ParsableArguments {
-    @Flag(name: .shortAndLong)
+    @Flag(name: .shortAndLong, help: "Verbose defaults to zero, and counts the number of times that -v or --verbose is given.")
     var verbose: Int
 }
 
