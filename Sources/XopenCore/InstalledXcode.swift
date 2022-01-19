@@ -1,4 +1,6 @@
 import Foundation
+import Stream
+import Log
 
 let xcodeBundleIdentifier = "com.apple.dt.Xcode"
 
@@ -49,7 +51,7 @@ final class InstalledXcode {
         do {
             let data = try Data.init(contentsOf: plistURL)
             let obj = try PropertyListSerialization.propertyList(from: data, options: [], format: nil)
-            Logger.log("\(obj)")
+            logger.debug("\(obj)")
             guard let info = obj as? [String: Any] else {
                 return nil
             }

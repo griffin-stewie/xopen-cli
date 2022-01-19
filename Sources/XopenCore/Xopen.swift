@@ -1,5 +1,7 @@
 import Cocoa
 import Foundation
+import Stream
+import Log
 
 public enum Xopen {
 
@@ -17,7 +19,7 @@ public enum Xopen {
 
         let urls = applicationURLsForURL(url)
         for appURL in urls {
-            Logger.log("\(appURL)")
+            logger.debug("\(appURL)")
         }
     }
 
@@ -36,7 +38,7 @@ public enum Xopen {
             .compactMap({ InstalledXcode($0) })
             .sorted(by: >)
 
-        Logger.log(xcodes)
+        logger.debug("\(xcodes)")
 
         if xcodes.isEmpty {
             throw XopenError.noXcodes

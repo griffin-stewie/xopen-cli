@@ -1,6 +1,8 @@
 import ArgumentParser
 import Foundation
 import XopenCore
+import Stream
+import Log
 
 struct OpenCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
@@ -39,14 +41,14 @@ extension OpenCommand {
             try repo.add(url: url)
             try repo.save()
         } catch {
-            print("Error: \(error)", to: &standardError)
             switch error {
             case XopenError.notInstalled:
                 print("Xcode you selected is not installed", to: &standardError)
             case XopenError.noXcodes:
                 print("No Xcode is found", to: &standardError)
             default:
-                print("Error: \(error.localizedDescription)", to: &standardError)
+                logger.warning("\(error.localizedDescription)")
+                logger.error("\(error.localizedDescription)")
             }
         }
     }

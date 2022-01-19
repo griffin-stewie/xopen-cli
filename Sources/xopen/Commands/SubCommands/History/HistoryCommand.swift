@@ -1,6 +1,7 @@
 import ArgumentParser
 import Foundation
 import XopenCore
+import Stream
 
 struct HistoryCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
