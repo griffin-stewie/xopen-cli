@@ -1,6 +1,6 @@
 import Foundation
 
-enum MatchingType {
+public enum MatchingType {
     /// must be exactly same
     case strict
     /// apply patch version if missing. ex: 10.1 == 10.1.0
