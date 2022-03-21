@@ -12,6 +12,7 @@ struct RootCommand: ParsableCommand {
             DefaultOpenCommand.self,
             OpenCommand.self,
             HistoryCommand.self,
+            WriteCommand.self,
         ],
         defaultSubcommand: DefaultOpenCommand.self
     )
