@@ -5,7 +5,7 @@ import Stream
 import Log
 import Path
 
-struct WriteCommand: ParsableCommand {
+struct WriteCommand: AsyncParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "write",
         abstract: "Write `.xcode-version` file"
@@ -14,14 +14,13 @@ struct WriteCommand: ParsableCommand {
     @OptionGroup()
     var options: WriteCommandOptions
 
-    func run() throws {
-        try run(options: options)
-        throw ExitCode.success
+    func run() async throws {
+        try await run(options: options)
     }
 }
 
 extension WriteCommand {
-    private func run(options: WriteCommandOptions) throws {
+    private func run(options: WriteCommandOptions) async throws {
         /// 2. Find installed Xcode
         let xcodes = Xopen.installedXcodes()
         let xcode = try xcodes.find(targetVersion: options.specificVersion)

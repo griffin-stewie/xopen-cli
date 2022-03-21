@@ -3,7 +3,7 @@ import Foundation
 import XopenCore
 import Stream
 
-struct HistoryCommand: ParsableCommand {
+struct HistoryCommand: AsyncParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "history",
         abstract: "Prints history opened"
@@ -12,14 +12,13 @@ struct HistoryCommand: ParsableCommand {
     @OptionGroup()
     var options: HistoryCommandOptions
 
-    func run() throws {
-        try run(options: options)
-        throw ExitCode.success
+    func run() async throws {
+        try await run(options: options)
     }
 }
 
 extension HistoryCommand {
-    private func run(options: HistoryCommandOptions) throws {
+    private func run(options: HistoryCommandOptions) async throws {
         do {
             let repo = try HistoryRepository()
             for url in repo.recentDocumentURLs {

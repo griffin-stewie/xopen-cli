@@ -4,7 +4,7 @@ import Path
 import XopenCore
 import Stream
 
-struct DefaultOpenCommand: ParsableCommand {
+struct DefaultOpenCommand: AsyncParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "defaultOpen",
         abstract: "Open file using Xcode version you defined by .xcode-version",
@@ -17,14 +17,13 @@ struct DefaultOpenCommand: ParsableCommand {
     @Option(name: .customLong("use-fallback"), help: ArgumentHelp("Specific Xcode version you want to use when failed to find a specific Xcode.", valueName: UserSpecificXcodeVersion.valueNames))
     var fallbackVersion: UserSpecificXcodeVersion = .latest
 
-    func run() throws {
-        try open()
-        throw ExitCode.success
+    func run() async throws {
+        try await open()
     }
 }
 
 extension DefaultOpenCommand {
-    private func open() throws {
+    private func open() async  throws {
         let rootDirectoryToFind = Path.cwd / "."
 
         let url = try findURLToOpen(under: rootDirectoryToFind.url)
