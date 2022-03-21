@@ -4,29 +4,33 @@ import Log
 
 let xcodeBundleIdentifier = "com.apple.dt.Xcode"
 
-final class InstalledXcode {
+public final class InstalledXcode {
 
-    let fileURL: URL
+    public let fileURL: URL
 
     private let infoDictionary: [String: Any]
 
     private let versionPlist: VersionPlist
 
-    let bundleIdentifier: String
+    public let bundleIdentifier: String
 
-    var shortVersion: String {
+    public var shortVersion: String {
         return versionPlist.shortVersion
     }
 
-    var version: Double {
+    public var version: Double {
         return versionPlist.version
     }
 
-    var isBeta: Bool {
+    public var versionObject: Version {
+        return Version(string: shortVersion)
+    }
+
+    public var isBeta: Bool {
         fileURL.lastPathComponent.lowercased().contains("beta")
     }
 
-    init?(_ fileURL: URL) {
+    public init?(_ fileURL: URL) {
         guard FileManager.default.fileExists(atPath: fileURL.path) else {
             return nil
         }
@@ -65,7 +69,7 @@ final class InstalledXcode {
 }
 
 extension InstalledXcode: CustomStringConvertible {
-    var description: String {
+    public var description: String {
         return """
             {
             \turl: \(fileURL),
@@ -77,17 +81,17 @@ extension InstalledXcode: CustomStringConvertible {
 }
 
 extension InstalledXcode: Equatable, Comparable {
-    static func == (lhs: InstalledXcode, rhs: InstalledXcode) -> Bool {
+    public static func == (lhs: InstalledXcode, rhs: InstalledXcode) -> Bool {
         return lhs.version == rhs.version
     }
 
-    static func < (lhs: InstalledXcode, rhs: InstalledXcode) -> Bool {
+    public static func < (lhs: InstalledXcode, rhs: InstalledXcode) -> Bool {
         return lhs.version < rhs.version
     }
 }
 
 extension Array where Element == InstalledXcode {
-    func find(targetVersion: UserSpecificXcodeVersion) throws -> Element {
+    public func find(targetVersion: UserSpecificXcodeVersion) throws -> Element {
         let element: Element
         switch targetVersion {
         case .beta:
@@ -114,15 +118,15 @@ extension Array where Element == InstalledXcode {
         return element
     }
 
-    func findLatestBeta() -> Element? {
+    public func findLatestBeta() -> Element? {
         return first(where: { $0.isBeta })
     }
 
-    func findLatestRelease() -> Element? {
+    public func findLatestRelease() -> Element? {
         return first(where: { !$0.isBeta })
     }
 
-    func findMatchedXcodeVersion(type: MatchingType, userSpecificVersion: String) -> Element? {
+    public func findMatchedXcodeVersion(type: MatchingType, userSpecificVersion: String) -> Element? {
         return first(where: {
             isMatchXcodeVersion(type: type, xcodeVersion: $0.shortVersion, userSpecificVersion: userSpecificVersion)
         })

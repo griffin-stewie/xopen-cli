@@ -44,6 +44,37 @@ extension Xopen {
         }
     }
 
+    static func applicationsURLsToOpenXcodeProj() -> [URL] {
+        if #available(macOS 12.0, *) {
+            guard let type = UTType("com.apple.xcode.project") else {
+                return []
+            }
+
+            let urls = NSWorkspace.shared.urlsForApplications(toOpen: type)
+            logger.debug("URLs to open \(type.identifier): \(urls)")
+            return urls
+        } else {
+            let fs = FileManager.default
+            do {
+                /// 1. Write dummy xcodeproj file to find installed Xcodes.
+                ///
+                let tempDir = fs.temporaryDirectory
+                let dummyXcodeProjURL = tempDir.appendingPathComponent("dummy.xcodeproj")
+                try fs.createDirectory(at: dummyXcodeProjURL, withIntermediateDirectories: false)
+                defer {
+                    try? fs.removeItem(at: dummyXcodeProjURL)
+                }
+
+                /// 2. Find installed Xcode
+                let urls = applicationURLsForURL(dummyXcodeProjURL)
+                logger.debug("URLs to open \(dummyXcodeProjURL.absoluteString): \(urls)")
+                return urls
+            } catch {
+                fatalError(error.localizedDescription)
+            }
+        }
+    }
+
     static func readXcodeVersionFile(at url: URL) -> String? {
         guard FileManager.default.fileExists(atPath: url.path) else {
             return nil
