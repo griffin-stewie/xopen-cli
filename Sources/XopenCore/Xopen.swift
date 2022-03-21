@@ -2,6 +2,7 @@ import Cocoa
 import Foundation
 import Stream
 import Log
+import UniformTypeIdentifiers
 
 public enum Xopen {
 
@@ -32,6 +33,23 @@ public enum Xopen {
     /// - Throws: error.
     @discardableResult
     public static func openXcode(with url: URL, targetVersion: UserSpecificXcodeVersion? = nil, fallbackVersion: UserSpecificXcodeVersion? = nil) throws -> NSRunningApplication {
+        let xcode = try xcode(with: url, targetVersion: targetVersion, fallbackVersion: fallbackVersion)
+        return try NSWorkspace.shared.open(
+            [url],
+            withApplicationAt: xcode.fileURL,
+            options: [.default],
+            configuration: [:]
+        )
+    }
+
+    /// Find installed Xcode
+    /// - Parameters:
+    ///   - url: A file URL you want to open by Xcode
+    ///   - targetVersion: Xcode version you want to use
+    ///   - fallbackVersion: Xcode version you want to use if no xcode-version
+    /// - Returns: Installed Xcode found
+    /// - Throws: error.
+    public static func xcode(with url: URL, targetVersion: UserSpecificXcodeVersion? = nil, fallbackVersion: UserSpecificXcodeVersion? = nil) throws -> InstalledXcode {
         let urls = applicationURLsForURL(url)
         let xcodes =
             urls
@@ -61,11 +79,19 @@ public enum Xopen {
             print("Use the latest Xcode(\(xcode.shortVersion)).", to: &standardError)
         }
 
-        return try NSWorkspace.shared.open(
-            [url],
-            withApplicationAt: xcode.fileURL,
-            options: [.default],
-            configuration: [:]
-        )
+        return xcode
+    }
+
+    /// List up installed Xcodes
+    /// - Returns: Array of InstalledXcode. Returns an empty array if something goes wrong or if Xcode is not installed.
+    public static func installedXcodes() -> [InstalledXcode] {
+        let urls = applicationsURLsToOpenXcodeProj()
+        let xcodes =
+            urls
+            .compactMap({ InstalledXcode($0) })
+            .sorted(by: >)
+
+        logger.debug("\(xcodes)")
+        return xcodes
     }
 }
