@@ -22,6 +22,10 @@ public final class InstalledXcode {
         return versionPlist.version
     }
 
+    public var versionObject: Version {
+        return Version(string: shortVersion)
+    }
+
     public var isBeta: Bool {
         fileURL.lastPathComponent.lowercased().contains("beta")
     }

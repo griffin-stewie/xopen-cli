@@ -1,9 +1,13 @@
 import Foundation
 
-struct Version {
-    let majorVersion: Int
-    let minorVersion: Int
-    let patchVersion: Int
+public struct Version {
+    public let majorVersion: Int
+    public let minorVersion: Int
+    public let patchVersion: Int
+
+    public var string: String {
+        "\(majorVersion).\(minorVersion).\(patchVersion)"
+    }
 }
 
 extension Version: Equatable {
@@ -15,10 +19,6 @@ extension Version {
         majorVersion = result.first
         minorVersion = result.second
         patchVersion = result.third
-    }
-
-    var string: String {
-        "\(majorVersion).\(minorVersion).\(patchVersion)"
     }
 
     private static func split(_ string: String) -> (first: Int, second: Int, third: Int) {
