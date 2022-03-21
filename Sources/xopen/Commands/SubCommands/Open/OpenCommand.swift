@@ -4,7 +4,7 @@ import XopenCore
 import Stream
 import Log
 
-struct OpenCommand: ParsableCommand {
+struct OpenCommand: AsyncParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "open",
         abstract: "Open file using Xcode version you defined by .xcode-version"
@@ -13,14 +13,13 @@ struct OpenCommand: ParsableCommand {
     @OptionGroup()
     var options: OpenCommandOptions
 
-    func run() throws {
-        try run(options: options)
-        throw ExitCode.success
+    func run() async throws {
+        try await run(options: options)
     }
 }
 
 extension OpenCommand {
-    private func run(options: OpenCommandOptions) throws {
+    private func run(options: OpenCommandOptions) async throws {
         let url: URL
         if options.autoDiscovery {
             url = try findURLToOpen(under: options.rootDirectoryToFind.url)
