@@ -14,22 +14,28 @@ public final class InstalledXcode {
 
     public let bundleIdentifier: String
 
+    /// Version ex: 13.4
     public var shortVersion: String {
         return versionPlist.shortVersion
     }
 
+    /// Version ex: 20503.0
     public var version: Double {
         return versionPlist.version
     }
 
+    /// Version object
     public var versionObject: Version {
         return Version(string: shortVersion)
     }
 
+    /// whether Xcode is beta or not.
     public var isBeta: Bool {
         fileURL.lastPathComponent.lowercased().contains("beta")
     }
 
+    /// Designed initializer
+    /// - Parameter fileURL: Xcode.app path.
     public init?(_ fileURL: URL) {
         guard FileManager.default.fileExists(atPath: fileURL.path) else {
             return nil
