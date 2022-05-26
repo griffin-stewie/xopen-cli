@@ -2,20 +2,20 @@ import Foundation
 import Log
 
 extension XcodeVersionFilePathfinder {
-    static let xcodeVersionFileName: String = Xopen.xcodeVersionFileName
+    public static let xcodeVersionFileName: String = Xopen.xcodeVersionFileName
 }
 
-final class XcodeVersionFilePathfinder {
+public final class XcodeVersionFilePathfinder {
 
     let ignoreDotDirectories: Bool
     let maxDepth: UInt
 
-    init(ignoreDotDirectories: Bool = true, maxDepth: UInt) {
+    public init(ignoreDotDirectories: Bool = true, maxDepth: UInt) {
         self.ignoreDotDirectories = ignoreDotDirectories
         self.maxDepth = maxDepth
     }
 
-    func discoverXcodeVersionFile(startFrom directoryURL: URL) throws -> URL {
+    public func discoverXcodeVersionFile(startFrom directoryURL: URL) throws -> URL {
         let url = try traverse(from: directoryURL, maxDepth: self.maxDepth)
 
         guard let url = url else {
