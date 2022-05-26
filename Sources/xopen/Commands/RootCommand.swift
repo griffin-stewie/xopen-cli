@@ -8,7 +8,7 @@ struct RootCommand: AsyncParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "xopen",
         abstract: "Open file using Xcode version you defined by .xcode-version",
-        version: "1.7.0",
+        version: "1.8.0",
         subcommands: [
             DefaultOpenCommand.self,
             OpenCommand.self,
