@@ -14,6 +14,7 @@ struct RootCommand: AsyncParsableCommand {
             OpenCommand.self,
             HistoryCommand.self,
             WriteCommand.self,
+            ReadCommand.self,
         ],
         defaultSubcommand: DefaultOpenCommand.self
     )

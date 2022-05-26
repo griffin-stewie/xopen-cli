@@ -31,7 +31,8 @@ extension OpenCommand {
 
         do {
             if options.dryRun {
-                print("\(url.absoluteString) will opened by \(String(describing: options.specificVersion))")
+                let xcode = try Xopen.xcode(with: url, targetVersion: options.specificVersion, fallbackVersion: options.fallbackVersion)
+                print("\(url.absoluteString) will opened by \(xcode.version) \(xcode.shortVersion)")
                 return
             }
 
