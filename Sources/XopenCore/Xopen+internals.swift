@@ -75,45 +75,6 @@ extension Xopen {
         }
     }
 
-    static func readXcodeVersionFile(at url: URL) -> String? {
-        guard FileManager.default.fileExists(atPath: url.path) else {
-            return nil
-        }
-
-        guard let readString = try? String(contentsOf: url) else {
-            return nil
-        }
-
-        let version = readString.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !version.isEmpty else {
-            return nil
-        }
-
-        return version
-    }
-
-    /// Find ".xcode-version" file around given URL
-    /// - Parameter openFileURL: The URL of the file to be opened by Xcode, such as "Package.swift", "XXX.xcworkspace", or "XXX.xcproj".
-    /// - Returns: ".xcode-version" file URL
-
-    /// Find ".xcode-version" file around given URL
-    /// - Parameters:
-    ///   - openFileURL: The URL of the file to be opened by Xcode, such as "Package.swift", "XXX.xcworkspace", or "XXX.xcproj".
-    ///   - maxDepth: maximam depth to go up
-    /// - Returns: ".xcode-version" file URL
-    static func findXcodeVersionFile(openFileURL: URL, maxDepth: UInt = 4) -> URL? {
-        // First, Try the target exists at same directory.
-        let dirURL = openFileURL.deletingLastPathComponent()
-        //        let xcodeVersionFileURL = dirURL.appendingPathComponent(xcodeVersionFileName)
-        //        if FileManager.default.fileExists(atPath: xcodeVersionFileURL.path) {
-        //            return xcodeVersionFileURL
-        //        }
-
-        // Second, Try the target exists upper level but the limit is repository root.
-        let a = XcodeVersionFilePathfinder(maxDepth: maxDepth)
-        return try? a.discoverXcodeVersionFile(startFrom: dirURL)
-    }
-
     static func isInsideGitRepository(at url: URL) -> Bool {
         let (status, output) = FileManager.default.chdir(url.path) {
             return shell("git", "rev-parse", "--is-inside-work-tree")
