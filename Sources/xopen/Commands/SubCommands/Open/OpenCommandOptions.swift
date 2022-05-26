@@ -10,7 +10,7 @@ struct OpenCommandOptions: ParsableArguments {
     @Option(name: .customLong("use-fallback"), help: ArgumentHelp("Specific Xcode version you want to use when failed to find a specific Xcode.", valueName: UserSpecificXcodeVersion.valueNames))
     var fallbackVersion: UserSpecificXcodeVersion?
 
-    @Flag(help: ArgumentHelp("dry run", shouldDisplay: false))
+    @Flag(help: ArgumentHelp("dry run", visibility: .hidden))
     var dryRun: Bool = false
 
     @Flag(help: ArgumentHelp("Automatically discovery the file under the current directory to open with Xcode"))
