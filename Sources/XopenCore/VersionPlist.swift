@@ -2,7 +2,7 @@ import Foundation
 
 struct VersionPlist: Decodable {
     let shortVersion: String
-    let version: Double
+    let version: String
     let buildVersion: String
 
     enum CodingKeys: String, CodingKey {
@@ -14,7 +14,7 @@ struct VersionPlist: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         shortVersion = try container.decode(String.self, forKey: .shortVersion)
-        version = try container.decode(Double.self, forKey: .version, transformFrom: String.self)
+        version = try container.decode(String.self, forKey: .version)
         buildVersion = try container.decode(String.self, forKey: .buildVersion)
     }
 }
