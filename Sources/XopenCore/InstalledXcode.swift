@@ -20,7 +20,7 @@ public final class InstalledXcode {
     }
 
     /// Version ex: 20503.0
-    public var version: Double {
+    public var version: String {
         return versionPlist.version
     }
 
@@ -92,7 +92,7 @@ extension InstalledXcode: Equatable, Comparable {
     }
 
     public static func < (lhs: InstalledXcode, rhs: InstalledXcode) -> Bool {
-        return lhs.version < rhs.version
+        return lhs.version.compare(rhs.version, options: .numeric) == .orderedAscending
     }
 }
 
