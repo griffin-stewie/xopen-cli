@@ -1,0 +1,88 @@
+name: release
+description: release my_echo
+inputs:
+  tag:
+    description: tag name to be released
+    default: ''
+  token:
+    description: GitHub token
+    required: true
+  signing-identifier:
+    description: signing identifier to codesign
+    required: true
+  apple-id:
+    description: Apple ID for Notarization
+    required: true
+  apple-id-password:
+    description: Apple ID's password for Notarization. Using App Password is recommended.
+    required: true
+  team-id:
+    description: Team ID for Notarization
+    required: true
+  certificate-base64:
+    description: Base64 encoded Developer ID certificate
+    required: true
+  p12-password:
+    description: password for Developer ID certificate
+    required: true
+  keychain-profile:
+    description: 'notarytool --keychain-profile parameter'
+    required: true
+    default: 'AC_PASSWORD'
+runs:
+  using: composite
+  steps:
+  - uses: maxim-lobanov/setup-xcode@v1
+    with:
+      xcode-version: '14.0.1'
+  - name: Install the Apple certificate
+    env:
+      CERTIFICATE_BASE64: ${{ inputs.certificate-base64 }}
+      P12_PASSWORD: ${{ inputs.p12-password }}
+    run: |
+      # create variables
+      CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+      KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+      KEYCHAIN_PASSWORD=$(uuidgen)
+
+      # echo
+      echo "CERTIFICATE_PATH: ${CERTIFICATE_PATH}"
+      echo "KEYCHAIN_PATH: ${KEYCHAIN_PATH}"
+      echo "KEYCHAIN_PASSWORD: ${KEYCHAIN_PASSWORD}"
+      echo "CERTIFICATE_BASE64: ${CERTIFICATE_BASE64}"
+      echo "P12_PASSWORD: ${P12_PASSWORD}"
+      echo ${{ inputs.certificate-base64 }}
+      echo ${{ inputs.team-id }}
+
+      # import certificate and provisioning profile from secrets
+      echo -n "$CERTIFICATE_BASE64" | base64 --decode --output $CERTIFICATE_PATH
+
+      # create temporary keychain
+      security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+      security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+      security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+      # import certificate to keychain
+      security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+      security list-keychain -d user -s $KEYCHAIN_PATH
+
+      # import credentials from secrets
+      xcrun notarytool store-credentials "${{ inputs.keychain-profile }}" --apple-id "${{ inputs.apple-id }}" --password "${{ inputs.apple-id-password }}" --team-id "${{ inputs.team-id }}" --keychain "${KEYCHAIN_PATH}"
+    shell: bash
+  - name: Resolve
+    run: swift package resolve
+    shell: bash
+  - name: Build
+    env:
+      SIGNING_IDENTIFIER: ${{ inputs.signing-identifier }}
+    run: |
+      make release_zip
+    shell: bash
+  - name: upload
+    uses: softprops/action-gh-release@v1
+    env:
+      GITHUB_TOKEN: ${{ inputs.token }}
+    with:
+      files: release_binary.zip
+      tag_name: ${{ inputs.tag }}
+    if: "inputs.tag != ''"
