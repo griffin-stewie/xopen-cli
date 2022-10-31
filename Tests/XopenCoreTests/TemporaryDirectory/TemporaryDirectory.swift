@@ -74,3 +74,41 @@ extension Path {
         fatalError()
     }
 #endif
+
+// MARK: - Tree support
+
+extension Path {
+    static func mktemp(treeString: String, body: (Path) throws -> Void) throws {
+        let tree = Tree(string: treeString)
+        let tmp = try TemporaryDirectory()
+        let tmpdir = Path(tmp.path)
+
+        let reports = tree.parse()
+        for report in reports {
+            let joined = tmpdir.join(paths: report.parents)
+            try createItem(by: report, at: joined)
+        }
+
+        try body(tmpdir)
+    }
+
+    @discardableResult
+    private static func createItem(by report: Tree.Report, at path: Path) throws -> Path {
+        let newPath = path/report.name
+        if report.isDirectory {
+            try newPath.mkdir(.p)
+        } else {
+            try newPath.touch()
+        }
+        return newPath
+    }
+}
+
+extension Pathish {
+    fileprivate func join(paths: [String]) -> Path {
+        paths.reduce(Path(self)) { partialResult, path in
+            partialResult.join(path)
+        }
+    }
+}
+
