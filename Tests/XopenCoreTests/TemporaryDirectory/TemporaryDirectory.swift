@@ -1,4 +1,5 @@
 import Foundation
+import Bucker
 
 @testable import Path
 
@@ -79,7 +80,7 @@ extension Path {
 
 extension Path {
     static func mktemp(treeString: String, body: (Path) throws -> Void) throws {
-        let tree = Tree(string: treeString)
+        let tree = Bucker(tree: treeString)
         let tmp = try TemporaryDirectory()
         let tmpdir = Path(tmp.path)
 
@@ -93,7 +94,7 @@ extension Path {
     }
 
     @discardableResult
-    private static func createItem(by report: Tree.Report, at path: Path) throws -> Path {
+    private static func createItem(by report: Bucker.Report, at path: Path) throws -> Path {
         let newPath = path/report.name
         if report.isDirectory {
             try newPath.mkdir(.p)
