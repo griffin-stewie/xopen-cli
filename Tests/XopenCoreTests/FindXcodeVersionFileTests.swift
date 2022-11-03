@@ -11,6 +11,7 @@ final class FindXcodeVersionFileTests: XCTestCase {
         let tree = """
         ./
         ├── .DS_Store
+        ├── .git/
         ├── .xcode-version
         ├── Package.swift
         ├── app/
