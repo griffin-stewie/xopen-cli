@@ -116,10 +116,6 @@ public enum Xopen {
     }
 
     /// Find ".xcode-version" file around given URL
-    /// - Parameter openFileURL: The URL of the file to be opened by Xcode, such as "Package.swift", "XXX.xcworkspace", or "XXX.xcproj".
-    /// - Returns: ".xcode-version" file URL
-
-    /// Find ".xcode-version" file around given URL
     /// - Parameters:
     ///   - openFileURL: The URL of the file to be opened by Xcode, such as "Package.swift", "XXX.xcworkspace", or "XXX.xcproj".
     ///   - maxDepth: maximam depth to go up
@@ -127,13 +123,25 @@ public enum Xopen {
     public static func findXcodeVersionFile(openFileURL: URL, maxDepth: UInt = 4) -> URL? {
         // First, Try the target exists at same directory.
         let dirURL = openFileURL.deletingLastPathComponent()
-        //        let xcodeVersionFileURL = dirURL.appendingPathComponent(xcodeVersionFileName)
-        //        if FileManager.default.fileExists(atPath: xcodeVersionFileURL.path) {
-        //            return xcodeVersionFileURL
-        //        }
+        return findXcodeVersionFile(from: dirURL, maxDepth: maxDepth)
+    }
 
-        // Second, Try the target exists upper level but the limit is repository root.
+
+    /// Find ".xcode-version" file under given URL
+    /// - Parameters:
+    ///   - rootDirectory: Search root directory
+    ///   - maxDepth: maximam depth to go down
+    /// - Returns: ".xcode-version" file URL
+    public static func findXcodeVersionFile(from rootDirectory: URL, maxDepth: UInt = 4) -> URL? {
         let a = XcodeVersionFilePathfinder(maxDepth: maxDepth)
-        return try? a.discoverXcodeVersionFile(startFrom: dirURL)
+        return try? a.discoverXcodeVersionFile(startFrom: rootDirectory)
+    }
+
+    /// Find file to be opend by Xcode, such as "Package.swift", "XXX.xcworkspace", or "XXX.xcproj".
+    /// - Parameter directoryURL: A root directory to discover.
+    /// - Returns: URL
+    public static func findFileToOpen(under directoryURL: URL) throws -> URL {
+        let pathfinder = XcodeFilePathfinder(maxDepth: .max)
+        return try pathfinder.discoverFileURL(under: directoryURL)
     }
 }

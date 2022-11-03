@@ -1,4 +1,5 @@
 import Path
+import Bucker
 import XCTest
 
 import class Foundation.Bundle
@@ -56,7 +57,34 @@ final class FindXcodeVersionFileTests: XCTestCase {
             print(root.url.path)
             print("")
 
-            let xcodeVersionFile = Xopen.findXcodeVersionFile(from: root.url)
+            let xcodeVersionFile = Xopen.findXcodeVersionFile(from: (root/"App").url)
+            XCTAssertEqual(Path(url: xcodeVersionFile!), (root/"App"/".xcode-version"))
+        }
+    }
+
+    func testFindXcodeVersionFileAtRootFromNestedDirectory() throws {
+        let tree = """
+        ./
+        ├── .DS_Store
+        ├── .xcode-version
+        ├── app/
+        │   └── Package.swift
+        └── scripts/
+        """
+
+        try Path.mktemp(treeString: tree) { root in
+            try root.find().execute { path in
+                if path.basename() == ".xcode-version" {
+                    let version = "13.0.0"
+                    try version.write(to: path)
+                }
+                return .continue
+            }
+
+            print(root.url.path)
+            print("")
+
+            let xcodeVersionFile = Xopen.findXcodeVersionFile(from: (root/"App").url)
             XCTAssertEqual(Path(url: xcodeVersionFile!), (root/".xcode-version"))
         }
     }

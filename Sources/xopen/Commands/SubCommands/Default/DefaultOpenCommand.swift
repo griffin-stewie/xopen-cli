@@ -47,7 +47,7 @@ extension DefaultOpenCommand {
     }
 
     private func findURLToOpen(under directoryURL: URL) throws -> URL {
-        let pathfinder = Pathfinder()
+        let pathfinder = XcodeFilePathfinder(maxDepth: .max)
         return try pathfinder.discoverFileURL(under: directoryURL)
     }
 }
