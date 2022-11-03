@@ -20,7 +20,7 @@ public final class Pathfinder {
 
     public enum Operation {
         case `continue`
-        case skipDirectory
+        case skipDirectory(URL)
         case abort
     }
 
@@ -89,8 +89,10 @@ extension Pathfinder {
                     deque.append(content)
                 }
                 continue
-            case .skipDirectory:
-                break
+            case .skipDirectory(let url):
+                if content != url, content.isDirectory {
+                    deque.append(content)
+                }
             case .abort:
                 return
             }

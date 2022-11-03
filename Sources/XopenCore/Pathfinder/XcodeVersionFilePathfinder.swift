@@ -15,16 +15,12 @@ public final class XcodeVersionFilePathfinder {
 
     public func discoverXcodeVersionFile(startFrom directoryURL: URL) throws -> URL {
         var foundURL: URL? = nil
-        var isGitRepositoryRootDir: Bool = false
+
         try self.pathfinder.discoverFileURL(under: directoryURL) { (content, isDirectory) throws -> Pathfinder.Operation in
             #if DEBUG
             logger.debug("\(content.absoluteString)")
             print("\(content.absoluteString)")
             #endif
-
-            if isGitRepositoryRootDir {
-                return .abort
-            }
 
             if content.isFile {
                 if content.lastPathComponent == Self.xcodeVersionFileName {
@@ -35,7 +31,7 @@ public final class XcodeVersionFilePathfinder {
 
             if isDirectory {
                 if content.lastPathComponent == ".git" {
-                    isGitRepositoryRootDir = true
+                    return .skipDirectory(content)
                 }
             }
 
