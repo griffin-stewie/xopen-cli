@@ -133,7 +133,7 @@ public enum Xopen {
     ///   - maxDepth: maximam depth to go down
     /// - Returns: ".xcode-version" file URL
     public static func findXcodeVersionFile(from rootDirectory: URL, maxDepth: UInt = 4) -> URL? {
-        let a = XcodeVersionFilePathfinder(maxDepth: maxDepth)
+        let a = XcodeVersionFilePathfinder(direction: .lower, maxDepth: maxDepth)
         return try? a.discoverXcodeVersionFile(startFrom: rootDirectory)
     }
 

@@ -9,8 +9,8 @@ public final class XcodeVersionFilePathfinder {
 
     let pathfinder: Pathfinder
 
-    public init(ignoreDotDirectories: Bool = true, maxDepth: UInt) {
-        self.pathfinder = Pathfinder(direction: .upper, maxDepth: maxDepth, ignoreDotDirectories: ignoreDotDirectories)
+    public init(direction: Pathfinder.Direction = .upper, ignoreDotDirectories: Bool = true, maxDepth: UInt) {
+        self.pathfinder = Pathfinder(direction: direction, maxDepth: maxDepth, ignoreDotDirectories: ignoreDotDirectories)
     }
 
     public func discoverXcodeVersionFile(startFrom directoryURL: URL) throws -> URL {

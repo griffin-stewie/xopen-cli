@@ -21,7 +21,7 @@ struct ReadCommand: AsyncParsableCommand {
 
 extension ReadCommand {
     private func run(options: ReadCommandOptions) async throws {
-        let finder = XcodeVersionFilePathfinder(maxDepth: 3)
+        let finder = XcodeVersionFilePathfinder(direction: .lower, maxDepth: 3)
         let xcodeVersionFileURL = try finder.discoverXcodeVersionFile(startFrom: options.rootDirectoryToFind.url)
 
         if options.printFilePath {

@@ -58,7 +58,7 @@ final class FindXcodeVersionFileTests: XCTestCase {
             print(root.url.path)
             print("")
 
-            let xcodeVersionFile = Xopen.findXcodeVersionFile(from: (root/"App").url)
+            let xcodeVersionFile = Xopen.findXcodeVersionFile(from: root.url)
             XCTAssertEqual(Path(url: xcodeVersionFile!), (root/"App"/".xcode-version"))
         }
     }
@@ -85,7 +85,7 @@ final class FindXcodeVersionFileTests: XCTestCase {
             print(root.url.path)
             print("")
 
-            let xcodeVersionFile = Xopen.findXcodeVersionFile(from: (root/"App").url)
+            let xcodeVersionFile = Xopen.findXcodeVersionFile(from: root.url)
             XCTAssertEqual(Path(url: xcodeVersionFile!), (root/".xcode-version"))
         }
     }
