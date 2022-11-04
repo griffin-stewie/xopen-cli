@@ -68,11 +68,7 @@ public final class Pathfinder {
 extension Pathfinder {
     // Breadth-First Search
     fileprivate func traverseToLower(at targetDirectoryURL: URL, rootDirectoryURL: URL, maxDepth: UInt, handler: TraverseHandler) throws {
-        var options: FileManager.DirectoryEnumerationOptions = [.skipsPackageDescendants]
-        if ignoreDotDirectories {
-            options = options.union(.skipsHiddenFiles)
-        }
-
+        let options: FileManager.DirectoryEnumerationOptions = [.skipsPackageDescendants]
         let fs = FileManager.default
         let contents = try fs.contentsOfDirectory(at: targetDirectoryURL, includingPropertiesForKeys: nil, options: options)
 
@@ -80,6 +76,10 @@ extension Pathfinder {
             #if DEBUG
                 logger.debug("\(content.absoluteString)")
             #endif
+
+            if ignoreDotDirectories && content.isDirectory && content.lastPathComponent.hasPrefix(".") {
+                continue
+            }
 
             let ops = try handler(content, content.isDirectory)
 
@@ -119,6 +119,10 @@ extension Pathfinder {
             logger.debug("\(content.absoluteString)")
             print("\(content.absoluteString)")
             #endif
+
+            if ignoreDotDirectories && content.isDirectory && content.lastPathComponent.hasPrefix(".") {
+                continue
+            }
 
             let ops = try handler(content, content.isDirectory)
 
