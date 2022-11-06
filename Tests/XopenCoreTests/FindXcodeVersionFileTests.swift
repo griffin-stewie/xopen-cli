@@ -1,4 +1,5 @@
 import Path
+import Bucker
 import XCTest
 
 import class Foundation.Bundle
@@ -6,54 +7,86 @@ import class Foundation.Bundle
 @testable import XopenCore
 
 final class FindXcodeVersionFileTests: XCTestCase {
-    func testReadXcodeVersionFileAtSameDirectory() throws {
-        try Path.mktemp { tmpdir in
-            try (tmpdir / "Package.swift").touch()
-            let versionFile = try (tmpdir / Xopen.xcodeVersionFileName).touch()
-
-            let version = "13.0.0"
-
-            try version.write(to: versionFile)
-
-            let readVersion = Xopen.readXcodeVersionFile(at: tmpdir.url)
-
-            XCTAssertNotNil(readVersion)
-            XCTAssertEqual(version, readVersion)
-        }
-    }
-
-    func testFindXcodeVersionFileAtSameDirectory() throws {
-        try Path.mktemp { tmpdir in
-            let fileURL = try (tmpdir / "Package.swift").touch()
-            let versionFile = try (tmpdir / Xopen.xcodeVersionFileName).touch()
-
-            let version = "13.0.0"
-
-            try version.write(to: versionFile)
-
-            let xcodeVersionFile = Xopen.findXcodeVersionFile(openFileURL: fileURL.url)
-
-            XCTAssertNotNil(xcodeVersionFile)
-            XCTAssertEqual(xcodeVersionFile, versionFile.url)
-        }
-    }
-
     func testFindXcodeVersionFileAtRoot() throws {
-        try Path.mktemp { tmpdir in
-            let fileURL = try (tmpdir.a.mkdir() / "Package.swift").touch()
-            let versionFile = try (tmpdir / Xopen.xcodeVersionFileName).touch()
+        let tree = """
+        ./
+        ├── .DS_Store
+        ├── .git/
+        ├── .xcode-version
+        ├── Package.swift
+        ├── app/
+        └── scripts/
+        """
 
-            let uuidString = UUID().uuidString
-            let version = "13.0.0 \(uuidString)"
+        try Path.mktemp(treeString: tree) { root in
+            try root.find().execute { path in
+                if path.basename() == ".xcode-version" {
+                    let version = "13.0.0"
+                    try version.write(to: path)
+                }
+                return .continue
+            }
 
-            print(uuidString)
+            print(root.url.path)
+            print("")
 
-            try version.write(to: versionFile)
+            let xcodeVersionFile = Xopen.findXcodeVersionFile(from: root.url)
+            XCTAssertEqual(Path(url: xcodeVersionFile!), (root/".xcode-version"))
+        }
+    }
 
-            let xcodeVersionFile = Xopen.findXcodeVersionFile(openFileURL: fileURL.url)
+    func testFindXcodeVersionFileInNestedDirectory() throws {
+        let tree = """
+        ./
+        ├── .DS_Store
+        ├── App/
+        │   ├── .xcode-version
+        │   └── Package.swift
+        ├── Build/
+        └── Scripts/
+        """
 
-            XCTAssertNotNil(xcodeVersionFile)
-            XCTAssertEqual(xcodeVersionFile, versionFile.url)
+        try Path.mktemp(treeString: tree) { root in
+            try root.find().execute { path in
+                if path.basename() == ".xcode-version" {
+                    let version = "13.0.0"
+                    try version.write(to: path)
+                }
+                return .continue
+            }
+
+            print(root.url.path)
+            print("")
+
+            let xcodeVersionFile = Xopen.findXcodeVersionFile(from: root.url)
+            XCTAssertEqual(Path(url: xcodeVersionFile!), (root/"App"/".xcode-version"))
+        }
+    }
+
+    func testFindXcodeVersionFileAtRootFromNestedDirectory() throws {
+        let tree = """
+        ./
+        ├── .DS_Store
+        ├── .xcode-version
+        ├── app/
+        │   └── Package.swift
+        └── scripts/
+        """
+
+        try Path.mktemp(treeString: tree) { root in
+            try root.find().execute { path in
+                if path.basename() == ".xcode-version" {
+                    let version = "13.0.0"
+                    try version.write(to: path)
+                }
+                return .continue
+            }
+
+            print(root.url.path)
+            print("")
+
+            let xcodeVersionFile = Xopen.findXcodeVersionFile(from: root.url)
+            XCTAssertEqual(Path(url: xcodeVersionFile!), (root/".xcode-version"))
         }
     }
 }

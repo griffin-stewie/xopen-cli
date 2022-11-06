@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "bucker",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/griffin-stewie/Bucker",
+      "state" : {
+        "branch" : "main",
+        "revision" : "51d39673e9f7539b877669686795f72d7b233cf7"
+      }
+    },
+    {
       "identity" : "path.swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mxcl/Path.swift.git",
