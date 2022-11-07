@@ -51,6 +51,10 @@ public final class XcodeFilePathfinder {
             logger.debug("\(content.absoluteString)")
             #endif
 
+            if let _ = foundURL() {
+                return .abort
+            }
+
             if isDirectory {
                 for ext in xcodeFileExtensions where ext == content.lastPathComponent.ns.pathExtension {
                     foundURLs.append(content)
@@ -78,6 +82,10 @@ public final class XcodeFilePathfinder {
 
 extension XcodeFilePathfinder {
     fileprivate func foundURL() -> URL? {
+        if foundURLs.isEmpty {
+            return nil
+        }
+
         for ext in Self.defaultXcodeFileExtensions {
             let found = foundURLs.first { url in
                 url.lastPathComponent.ns.pathExtension == ext
