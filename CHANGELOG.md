@@ -1,5 +1,8 @@
 # Changelog
 
+## [v1.8.4](https://github.com/griffin-stewie/xopen-cli/compare/v1.8.3...v1.8.4) - 2022-11-07
+- fix open subcommand won’t work by @griffin-stewie in https://github.com/griffin-stewie/xopen-cli/pull/15
+
 ## [v1.8.3](https://github.com/griffin-stewie/xopen-cli/compare/v1.8.2...v1.8.3) - 2022-11-06
 - read subcommand won't search .xcode-version in nested directory by @griffin-stewie in https://github.com/griffin-stewie/xopen-cli/pull/13
 
