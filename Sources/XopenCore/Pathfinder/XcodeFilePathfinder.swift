@@ -79,12 +79,15 @@ public final class XcodeFilePathfinder {
             throw XopenError.custom("Not found")
         }
 
+        logger.debug("URL will be opened: \(url)")
+
         return url
     }
 }
 
 extension XcodeFilePathfinder {
     fileprivate func foundURL() -> URL? {
+        logger.debug("foundURLs: \(foundURLs)")
         if foundURLs.isEmpty {
             return nil
         }
