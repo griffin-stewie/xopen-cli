@@ -72,6 +72,11 @@ extension Pathfinder {
         let fs = FileManager.default
         let contents = try fs.contentsOfDirectory(at: targetDirectoryURL, includingPropertiesForKeys: nil, options: options)
 
+        // Exit recursive calls if no contents
+        guard !contents.isEmpty else {
+            return
+        }
+
         for content in contents {
             #if DEBUG
                 logger.debug("\(content.absoluteString)")
