@@ -22,7 +22,7 @@ extension OpenCommand {
     private func run(options: OpenCommandOptions) async throws {
         let url: URL
         if options.autoDiscovery {
-            url = try findURLToOpen(under: options.rootDirectoryToFind.url)
+            url = try Xopen.findFileToOpen(under: options.rootDirectoryToFind.url)
         } else {
             url = options.path!.url
         }
@@ -51,10 +51,5 @@ extension OpenCommand {
                 logger.error("\(error.localizedDescription)")
             }
         }
-    }
-
-    private func findURLToOpen(under directoryURL: URL) throws -> URL {
-        let pathfinder = XcodeFilePathfinder(maxDepth: .max)
-        return try pathfinder.discoverFileURL(under: directoryURL)
     }
 }
