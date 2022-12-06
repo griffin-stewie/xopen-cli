@@ -46,7 +46,7 @@ public final class XcodeFilePathfinder {
     /// - Returns: URL found.
     /// - Throws: when not found.
     public func discoverFileURL(under rootDirectoryURL: URL) throws -> URL {
-        try pathfinder.discoverFileURL(under: rootDirectoryURL) { (content, isDirectory) throws -> Pathfinder.Operation in
+        try pathfinder.discoverFileURL(under: rootDirectoryURL) { (content, isDirectory, depth) throws -> Pathfinder.Operation in
             #if DEBUG
             logger.debug("\(content.absoluteString)")
             #endif
