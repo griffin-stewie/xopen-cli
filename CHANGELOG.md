@@ -1,5 +1,7 @@
 # Changelog
 
+## [v1.8.6](https://github.com/griffin-stewie/xopen-cli/compare/v1.8.5...v1.8.6) - 2022-12-07
+
 ## [v1.8.5](https://github.com/griffin-stewie/xopen-cli/compare/v1.8.4...v1.8.5) - 2022-12-07
 - Fix open behavior  by @griffin-stewie in https://github.com/griffin-stewie/xopen-cli/pull/17
 
