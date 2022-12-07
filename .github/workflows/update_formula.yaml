@@ -1,0 +1,20 @@
+name: Update Homebrew Formula
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        required: true
+        description: Tag name
+jobs:
+  update:
+    runs-on: macos-12
+    steps:
+    - name: Update formula on tag
+      uses: "mislav/bump-homebrew-formula-action@v2"
+      with:
+        tag-name: ${{ github.event.inputs.tag }}
+        download-url: https://github.com/griffin-stewie/xopen-cli/releases/download/${{ github.event.inputs.tag }}/release_binary.zip
+        formula-name: xopen-cli
+        homebrew-tap: griffin-stewie/homebrew-formulae
+      env:
+        COMMITTER_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
