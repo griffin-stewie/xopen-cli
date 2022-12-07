@@ -34,7 +34,7 @@ runs:
   steps:
   - uses: maxim-lobanov/setup-xcode@v1
     with:
-      xcode-version: '14.0.1'
+      xcode-version: '14.1.0'
   - name: Install the Apple certificate
     env:
       CERTIFICATE_BASE64: ${{ inputs.certificate-base64 }}
