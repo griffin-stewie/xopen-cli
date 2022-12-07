@@ -29,7 +29,7 @@ public final class Pathfinder {
         case upper
     }
 
-    public typealias TraverseHandler = (URL, Bool) throws -> Operation
+    public typealias TraverseHandler = (_ content: URL, _ isDirectory: Bool, _ depth: UInt) throws -> Operation
 
 
     /// To ignore dot directories, set true.
@@ -72,6 +72,11 @@ extension Pathfinder {
         let fs = FileManager.default
         let contents = try fs.contentsOfDirectory(at: targetDirectoryURL, includingPropertiesForKeys: nil, options: options)
 
+        // Exit recursive calls if no contents
+        guard !contents.isEmpty else {
+            return
+        }
+
         for content in contents {
             #if DEBUG
                 logger.debug("\(content.absoluteString)")
@@ -81,7 +86,7 @@ extension Pathfinder {
                 continue
             }
 
-            let ops = try handler(content, content.isDirectory)
+            let ops = try handler(content, content.isDirectory, maxDepth)
 
             switch ops {
             case .continue:
@@ -124,7 +129,7 @@ extension Pathfinder {
                 continue
             }
 
-            let ops = try handler(content, content.isDirectory)
+            let ops = try handler(content, content.isDirectory, maxDepth)
 
             switch ops {
             case .continue:

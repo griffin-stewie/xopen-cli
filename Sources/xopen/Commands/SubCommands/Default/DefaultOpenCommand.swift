@@ -26,7 +26,7 @@ extension DefaultOpenCommand {
     private func open() async  throws {
         let rootDirectoryToFind = Path.cwd / "."
 
-        let url = try findURLToOpen(under: rootDirectoryToFind.url)
+        let url = try Xopen.findFileToOpen(under: rootDirectoryToFind.url)
 
         do {
             try Xopen.openXcode(with: url, targetVersion: specificVersion, fallbackVersion: fallbackVersion)
@@ -44,10 +44,5 @@ extension DefaultOpenCommand {
                 print("Error: \(error.localizedDescription)", to: &standardError)
             }
         }
-    }
-
-    private func findURLToOpen(under directoryURL: URL) throws -> URL {
-        let pathfinder = XcodeFilePathfinder(maxDepth: .max)
-        return try pathfinder.discoverFileURL(under: directoryURL)
     }
 }

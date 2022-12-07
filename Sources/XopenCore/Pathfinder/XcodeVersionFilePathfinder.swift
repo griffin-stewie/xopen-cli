@@ -16,7 +16,7 @@ public final class XcodeVersionFilePathfinder {
     public func discoverXcodeVersionFile(startFrom directoryURL: URL) throws -> URL {
         var foundURL: URL? = nil
 
-        try self.pathfinder.discoverFileURL(under: directoryURL) { (content, isDirectory) throws -> Pathfinder.Operation in
+        try self.pathfinder.discoverFileURL(under: directoryURL) { (content, isDirectory, _) throws -> Pathfinder.Operation in
             #if DEBUG
             logger.debug("\(content.absoluteString)")
             print("\(content.absoluteString)")

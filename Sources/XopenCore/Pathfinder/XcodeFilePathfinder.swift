@@ -46,14 +46,17 @@ public final class XcodeFilePathfinder {
     /// - Returns: URL found.
     /// - Throws: when not found.
     public func discoverFileURL(under rootDirectoryURL: URL) throws -> URL {
-        try pathfinder.discoverFileURL(under: rootDirectoryURL) { (content, isDirectory) throws -> Pathfinder.Operation in
+        var prevDepth: UInt = self.pathfinder.maxDepth
+        try pathfinder.discoverFileURL(under: rootDirectoryURL) { (content, isDirectory, depth) throws -> Pathfinder.Operation in
             #if DEBUG
             logger.debug("\(content.absoluteString)")
             #endif
 
-            if let _ = foundURL() {
+            if prevDepth != depth, let _ = foundURL() {
                 return .abort
             }
+
+            prevDepth = depth
 
             if isDirectory {
                 for ext in xcodeFileExtensions where ext == content.lastPathComponent.ns.pathExtension {
@@ -76,12 +79,15 @@ public final class XcodeFilePathfinder {
             throw XopenError.custom("Not found")
         }
 
+        logger.debug("URL will be opened: \(url)")
+
         return url
     }
 }
 
 extension XcodeFilePathfinder {
     fileprivate func foundURL() -> URL? {
+        logger.debug("foundURLs: \(foundURLs)")
         if foundURLs.isEmpty {
             return nil
         }
