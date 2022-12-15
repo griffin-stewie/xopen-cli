@@ -1,7 +1,10 @@
 import Foundation
 
 struct VersionPlist: Decodable {
+    /// Version ex: 13.4
     let shortVersion: String
+
+    /// Version ex: 20503.0
     let version: String
     let buildVersion: String
 

@@ -1,4 +1,5 @@
 import Foundation
+import TSCUtility
 
 public enum MatchingType {
     /// must be exactly same
@@ -12,8 +13,8 @@ func isMatchXcodeVersion(type: MatchingType, xcodeVersion: String, userSpecificV
     case .strict:
         return xcodeVersion == userSpecificVersion
     case .supplement:
-        let l = Version(string: xcodeVersion)
-        let h = Version(string: userSpecificVersion)
+        let l = try! Version(versionString: xcodeVersion, usesLenientParsing: true)
+        let h = try! Version(versionString: userSpecificVersion, usesLenientParsing: true)
         return l == h
     }
 }
