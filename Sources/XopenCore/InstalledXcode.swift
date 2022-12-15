@@ -1,12 +1,13 @@
 import Foundation
 import Stream
 import Log
+import TSCUtility
 
 let xcodeBundleIdentifier = "com.apple.dt.Xcode"
 
 public final class InstalledXcode {
 
-    public let fileURL: URL
+    public let fileURL: Foundation.URL
 
     private let infoDictionary: [String: Any]
 
@@ -25,9 +26,7 @@ public final class InstalledXcode {
     }
 
     /// Version object
-    public var versionObject: Version {
-        return Version(string: shortVersion)
-    }
+    public var versionObject: Version
 
     /// whether Xcode is beta or not.
     public var isBeta: Bool {
@@ -36,7 +35,7 @@ public final class InstalledXcode {
 
     /// Designed initializer
     /// - Parameter fileURL: Xcode.app path.
-    public init?(_ fileURL: URL) {
+    public init?(_ fileURL: Foundation.URL) {
         guard FileManager.default.fileExists(atPath: fileURL.path) else {
             return nil
         }
@@ -67,6 +66,7 @@ public final class InstalledXcode {
             }
             self.infoDictionary = info
             versionPlist = try PropertyListDecoder().decode(VersionPlist.self, from: data)
+            versionObject = try Version(versionString: versionPlist.shortVersion, usesLenientParsing: true)
         } catch {
             print("\(error)", to: &standardError)
             return nil
@@ -92,7 +92,7 @@ extension InstalledXcode: Equatable, Comparable {
     }
 
     public static func < (lhs: InstalledXcode, rhs: InstalledXcode) -> Bool {
-        return lhs.version.compare(rhs.version, options: .numeric) == .orderedAscending
+        return lhs.versionObject < rhs.versionObject
     }
 }
 
@@ -136,5 +136,11 @@ extension Array where Element == InstalledXcode {
         return first(where: {
             isMatchXcodeVersion(type: type, xcodeVersion: $0.shortVersion, userSpecificVersion: userSpecificVersion)
         })
+    }
+}
+
+extension Version {
+    public var string: String {
+        "\(major).\(minor).\(patch)"
     }
 }

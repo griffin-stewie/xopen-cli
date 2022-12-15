@@ -29,7 +29,6 @@ let package = Package(
             dependencies: [
                 "XopenCore",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
-                .product(name: "SwiftToolsSupport-auto", package: "swift-tools-support-core"),
             ]),
         .target(
             name: "XopenCore",
@@ -38,6 +37,7 @@ let package = Package(
                 "Log",
                 .product(name: "DequeModule", package: "swift-collections"),
                 .product(name: "Path", package: "Path.swift"),
+                .product(name: "SwiftToolsSupport-auto", package: "swift-tools-support-core"),
             ]),
         .target(
             name: "Stream",
