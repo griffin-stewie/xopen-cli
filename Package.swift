@@ -17,8 +17,8 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-argument-parser", exact: "1.2.0"),
         .package(url: "https://github.com/apple/swift-tools-support-core.git", exact: "0.4.0"),
         .package(url: "https://github.com/apple/swift-collections.git", exact: "1.0.4"),
+        .package(url: "https://github.com/apple/swift-log.git", exact: "1.4.4"),
         .package(url: "https://github.com/mxcl/Path.swift.git", exact: "1.4.0"),
-        .package(url: "https://github.com/sushichop/Puppy", exact: "0.5.1"),
         .package(url: "https://github.com/griffin-stewie/Bucker", branch: "main"),
     ],
     targets: [
@@ -47,7 +47,7 @@ let package = Package(
             name: "Log",
             dependencies: [
                 "Stream",
-                .product(name: "Puppy", package: "Puppy"),
+                .product(name: "Logging", package: "swift-log"),
             ]),
         .testTarget(
             name: "XopenCoreTests",
