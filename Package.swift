@@ -1,4 +1,4 @@
-// swift-tools-version:5.6
+// swift-tools-version:5.7
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -14,11 +14,11 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(url: "https://github.com/apple/swift-argument-parser", .upToNextMinor(from: "1.1.1")),
-        .package(url: "https://github.com/apple/swift-tools-support-core.git", .upToNextMinor(from: "0.2.5")),
-        .package(url: "https://github.com/apple/swift-collections.git", .upToNextMinor(from: "1.0.2")),
-        .package(url: "https://github.com/mxcl/Path.swift.git", .upToNextMinor(from: "1.4.0")),
-        .package(url: "https://github.com/sushichop/Puppy", .upToNextMinor(from: "0.5.0")),
+        .package(url: "https://github.com/apple/swift-argument-parser", exact: "1.2.0"),
+        .package(url: "https://github.com/apple/swift-tools-support-core.git", exact: "0.4.0"),
+        .package(url: "https://github.com/apple/swift-collections.git", exact: "1.0.4"),
+        .package(url: "https://github.com/mxcl/Path.swift.git", exact: "1.4.0"),
+        .package(url: "https://github.com/sushichop/Puppy", exact: "0.5.1"),
         .package(url: "https://github.com/griffin-stewie/Bucker", branch: "main"),
     ],
     targets: [
